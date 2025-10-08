@@ -37,6 +37,7 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
   - Autocompletado contextual disponible desde la CLI (`--suggest-queries`) y la interfaz interactiva (`sugerencias <prefijo>`).
   - `DocumentationIndex` admite refresco incremental (`refresh`) y genera sugerencias semánticas sin reconstrucciones completas.
   - `MetricsRegistry` recopila latencia promedio, máxima y volumen de resultados por modo, accesible mediante `run_agent.py` y `willow --metrics`.
+  - Evidencia técnica consolidada en [`20_Verificacion_Fase_2.md`](./20_Verificacion_Fase_2.md) con comandos de validación paso a paso.
 
 ### 3.2 Alcance pendiente inmediato
 - Afinar el algoritmo de sugerencias con señales de uso reales y priorización por rol.

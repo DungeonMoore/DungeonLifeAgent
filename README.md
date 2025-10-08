@@ -77,6 +77,10 @@ Willow se adapta automáticamente a tu especialización en el equipo DLE:
 - **Indexación Incremental**: Detecta cambios en la documentación sin reconstrucciones completas
 - **Métricas de Rendimiento**: Registra latencia y cobertura por modo en tiempo real
 
+### 🧪 **Evidencia de Fase 2**
+- Consulta la ficha de verificación [`Documentacion/20_Verificacion_Fase_2.md`](./Documentacion/20_Verificacion_Fase_2.md) para revisar el mapeo entre funcionalidades anunciadas y su implementación.
+- Allí encontrarás instrucciones paso a paso para ejecutar autocompletado, refresco incremental y reporte de métricas desde la CLI o `run_agent.py`.
+
 ### 🔒 **Seguridad y Confianza**
 - **Operaciones Controladas**: Cada acción requiere confirmación estricta
 - **Trazabilidad Completa**: Willow registra cada interacción
