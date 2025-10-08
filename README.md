@@ -73,6 +73,13 @@ Willow se adapta automáticamente a tu especialización en el equipo DLE:
 - **Especialización por Roles**: Se adapta automáticamente a tu función profesional
 - **Modelos Locales**: Completamente offline usando tecnología avanzada
 - **Tres Modos Inteligentes**: Consultor, Taxonómico y Colaborador Activo
+- **Autocompletado Contextual**: Sugiere consultas relevantes antes de ejecutar búsquedas
+- **Indexación Incremental**: Detecta cambios en la documentación sin reconstrucciones completas
+- **Métricas de Rendimiento**: Registra latencia y cobertura por modo en tiempo real
+
+### 🧪 **Evidencia de Fase 2**
+- Consulta la ficha de verificación [`Documentacion/20_Verificacion_Fase_2.md`](./Documentacion/20_Verificacion_Fase_2.md) para revisar el mapeo entre funcionalidades anunciadas y su implementación.
+- Allí encontrarás instrucciones paso a paso para ejecutar autocompletado, refresco incremental y reporte de métricas desde la CLI o `run_agent.py`.
 
 ### 🔒 **Seguridad y Confianza**
 - **Operaciones Controladas**: Cada acción requiere confirmación estricta
@@ -100,6 +107,24 @@ python run_agent.py
 
 # También puedes usar la nueva interfaz de línea de comandos
 willow --mode consultor "¿Qué describe la arquitectura técnica?"
+<<<<<<< ours
+<<<<<<< ours
+=======
+=======
+>>>>>>> theirs
+
+# Solicitar sugerencias antes de preguntar
+willow --suggest-queries "trinity"
+
+# Refrescar el índice tras actualizar un archivo
+willow --refresh-index Documentacion/19_Plan_Ejecucion_Proyecto.md
+
+# Revisar métricas de latencia y cobertura (misma sesión)
+willow --metrics
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 ```
 
 **Willow susurra:** *"Bienvenido al bosque digital. ¿En qué rama del conocimiento deseas posarte hoy?"*

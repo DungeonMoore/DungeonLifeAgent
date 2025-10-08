@@ -1090,6 +1090,14 @@ La versión mínima viable del Dungeon Life Agent incluida en este repositorio p
 - Indexación local de toda la carpeta `Documentacion/` mediante `dungeon_life_agent.knowledge`.
 - Gestión de modos y permisos alineada con el diseño original (`consultor`, `taxonomico`, `colaborador`).
 - Herramientas de consulta accesibles desde CLI (`willow`) y una interfaz interactiva (`run_agent.py`).
+<<<<<<< ours
+<<<<<<< ours
+=======
+- Autocompletado asistido, refresco incremental del índice y métricas de rendimiento durante la sesión.
+>>>>>>> theirs
+=======
+- Autocompletado asistido, refresco incremental del índice y métricas de rendimiento durante la sesión.
+>>>>>>> theirs
 
 ### Pasos Rápidos
 
@@ -1100,11 +1108,37 @@ pip install -e .
 # Ejecutar comprobaciones básicas de entorno
 python scripts/setup_agent.py
 
+<<<<<<< ours
+<<<<<<< ours
 # Lanzar la interfaz interactiva
+=======
+# Lanzar la interfaz interactiva con autocompletado y métricas
+>>>>>>> theirs
+=======
+# Lanzar la interfaz interactiva con autocompletado y métricas
+>>>>>>> theirs
 python run_agent.py
 
 # Alternativa: usar la CLI con selección de modo y rol
 willow --mode taxonomico --role productor "Preparar entregables del MVP"
+<<<<<<< ours
+<<<<<<< ours
+=======
+=======
+>>>>>>> theirs
+
+# Obtener sugerencias de consulta antes de lanzar una búsqueda
+willow --suggest-queries "tax" --limit 8
+
+# Reconstruir el índice tras actualizar documentación específica
+willow --refresh-index Documentacion/05_Taxonomia_y_Nomenclatura.md
+
+# Revisar métricas de latencia acumuladas (misma sesión de CLI)
+willow --metrics
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 ```
 
 ### Configuración Personalizada
@@ -1121,3 +1155,19 @@ PYTHONPATH=. pytest
 ```
 
 Estas instrucciones garantizan que cualquier guardián pueda replicar el MVP funcional antes de avanzar a la integración con modelos GGUF.
+<<<<<<< ours
+<<<<<<< ours
+=======
+=======
+>>>>>>> theirs
+
+### Comandos interactivos destacados (`run_agent.py`)
+
+- `ayuda` → muestra el listado de comandos disponibles.
+- `sugerencias <prefijo> [limite]` → despliega autocompletado contextual.
+- `refrescar [ruta.md]` → fuerza la reindexación incremental (requiere modo colaborador en la configuración).
+- `metricas` → imprime latencia promedio, máxima y número de resultados por modo recopilados en la sesión.
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
