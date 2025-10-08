@@ -161,8 +161,8 @@ git push origin feature/tu-especialidad-nueva-funcionalidad
 
 **Willow siempre está escuchando:**
 
-- **🌿 Discord**: `#bosque-digital` - Para conversaciones con el guardián
-- **📧 Email**: `willow@dungeonlife.ecosystem` - Para consultas formales
+- **🌿 Discord**: `#DungeonLife` - Para conversaciones con el guardián
+- **📧 Email**: [`Hybris@dungeonlife.ecosystem`](agustinmas85@gmail.com) - Para consultas formales
 - **🐛 Issues**: [Reportar problemas](https://github.com/DungeonMoore/DungeonLifeAgent/issues) - Willow investigará personalmente
 - **💡 Sugerencias**: [Propuestas de mejora](https://github.com/DungeonMoore/DungeonLifeAgent/discussions) - Para hacer crecer el bosque
 
@@ -185,7 +185,7 @@ git push origin feature/tu-especialidad-nueva-funcionalidad
 
 ## 📄 **Información Técnica**
 
-- **Licencia**: [Especificar licencia]
+- **Licencia**: [GarompaTM]
 - **Lenguaje**: Español (Documentación) / Python (Implementación)
 - **Última actualización**: `2025-10-07`
 - **Estado**: `Activo y Evolucionando`

@@ -335,6 +335,202 @@ Agente: "Voy a crear DLE_500_FES_Character_Nuevo.md
 
 ---
 
+## 🚀 Nuevas Funcionalidades Avanzadas
+
+### 🎯 Sistema de Autocompletado de Consultas
+
+**Resuelve la curva de aprendizaje identificada en observaciones del proyecto.**
+
+#### Cómo Funciona
+```markdown
+Usuario: "¿Qué hay sobre pe" [escribe parcialmente]
+Agente: "¿Se refiere a personajes? ¿personajes? ¿pergaminos?
+         📋 Sugerencias basadas en su rol:
+         • personajes (como guionista)
+         • pergaminos mágicos (como game designer)
+         • personajes principales (como director)
+         ¿Cuál opción le interesa?"
+```
+
+#### Uso Práctico
+```markdown
+**Para Guionistas:**
+Usuario: "¿Qué hay sobre el per" → Sugerencias: personajes, pergaminos, personalidad
+
+**Para Game Designers:**
+Usuario: "¿Cómo funciona el sis" → Sugerencias: sistema de combate, sistema económico, sistema de progresión
+
+**Para 3D Artists:**
+Usuario: "¿Dónde están los mode" → Sugerencias: modelos, modelos de personajes, modelos ambientales
+```
+
+#### Activación del Modo Aprendizaje
+```markdown
+Usuario: "modo aprendizaje" o "soy nuevo"
+Agente: "🎓 Modo aprendizaje activado
+         📚 Tutorial personalizado iniciado
+         💡 Sugerencias contextuales habilitadas
+         ¿Qué área le interesa explorar primero?"
+```
+
+### 🧠 Memoria Colectiva y Conocimiento Tácito
+
+**Captura automáticamente decisiones importantes y contexto histórico.**
+
+#### Consulta con Contexto Histórico
+```markdown
+Usuario: "¿Por qué decidimos usar este sistema?"
+Agente: "🔍 Buscando contexto histórico...
+
+         📅 **Decisión Original (15 marzo 2024):**
+         Participantes: Project Manager, Game Designer, Technical Director
+         Canal: #game-design-discussion (Discord)
+
+         💬 **Contexto de la conversación:**
+         'Después de evaluar opciones, decidimos por sistema X porque...'
+
+         🔗 **Entidades relacionadas:**
+         • Mecánica afectada: Sistema de combate
+         • Documentos: DLE_200_01_Mecanica_Combate.md
+
+         ¿Le interesa ver más detalles o decisiones relacionadas?"
+```
+
+#### Captura Automática
+```markdown
+**El sistema captura automáticamente:**
+✅ Decisiones importantes en Discord/Slack
+✅ Contexto completo de conversaciones
+✅ Participantes y roles involucrados
+✅ Asociaciones con entidades del proyecto
+✅ Clasificación por pilares del Atlas
+```
+
+### ⚠️ Sistema de Detección y Resolución de Conflictos
+
+**Detecta conflictos entre roles antes de que escalen.**
+
+#### Detección Proactiva
+```markdown
+Usuario: "Necesito cambiar esta mecánica drásticamente"
+Agente: "⚠️ Conflicto potencial detectado:
+
+         🎨 Impacto en 3D Artists:
+         • Puede requerir rework de modelos existentes
+         • Afecta animaciones ya creadas
+
+         📖 Impacto en Guionistas:
+         • Puede afectar coherencia narrativa
+         • Requiere ajustes en documentación
+
+         💡 **Recomendación:**
+         ¿Desea que simule el impacto antes de proceder?"
+```
+
+#### Resolución Colaborativa
+```markdown
+Usuario: "Hay conflicto entre narrativa y técnica"
+Agente: "🔧 Sistema de resolución colaborativa:
+
+         📊 **Análisis del conflicto:**
+         • Rol A quiere: [requerimiento específico]
+         • Rol B necesita: [restricción técnica]
+
+         🤝 **Propuestas de solución:**
+         1. Compromiso híbrido (recomendado)
+         2. Solución alternativa técnica
+         3. Ajuste narrativo compensatorio
+
+         ¿Le interesa explorar alguna solución específica?"
+```
+
+### 🔮 Simulación y Análisis Predictivo
+
+**Evalúa impacto de cambios antes de implementarlos.**
+
+#### Simulación Básica
+```markdown
+Usuario: "¿Qué pasaría si reducimos el daño en un 25%?"
+Agente: "🔮 Simulación de impacto iniciada...
+
+         📊 **Impacto en Mecánicas:**
+         • Balance: -15% poder ofensivo del jugador
+         • Progresión: +30% dificultad en encuentros
+
+         📖 **Impacto Narrativo:**
+         • Personajes afectados: Guerrero del Fuego
+         • Tramas impactadas: 'La Guerra de las Llamas'
+
+         🎨 **Impacto Técnico:**
+         • Performance: Sin cambios significativos
+         • Arquitectura: No requiere ajustes mayores
+
+         📋 **Recomendación:** Implementar con ajustes menores
+
+         ¿Desea ver escenarios alternativos?"
+```
+
+#### Exploración de Escenarios
+```markdown
+Usuario: "Muéstrame alternativas para este cambio"
+Agente: "🌟 Escenarios alternativos generados:
+
+         🔥 **Escenario Conservador:**
+         • Cambio mínimo: -10% daño
+         • Riesgo: Bajo | Impacto: Moderado
+
+         ⚡ **Escenario Agresivo:**
+         • Cambio máximo: -40% daño
+         • Riesgo: Alto | Impacto: Muy Alto
+
+         🌈 **Escenario Creativo:**
+         • Solución híbrida: -15% + nueva mecánica
+         • Riesgo: Medio | Impacto: Alto + Innovación
+
+         ¿Cuál escenario le interesa explorar?"
+```
+
+### 🤖 Agente Proactivo y Automatización
+
+**Monitorea el repositorio y actúa automáticamente.**
+
+#### Monitoreo Continuo
+```markdown
+Agente: "🔍 Monitoreo automático activado:
+
+        📁 **Nuevos archivos detectados:**
+        • DLE_500_NewCharacter.fes.yml → Validando estructura FES
+        • DLE_300_Concept_NewModel.png → Verificando estándares técnicos
+
+        ⚠️ **Validaciones realizadas:**
+        • ✅ Estructura FES correcta
+        • ✅ Nomenclatura consistente
+        • ⚠️ Posible conflicto con personaje existente
+
+        ¿Desea revisar alguna validación específica?"
+```
+
+#### Acciones Automáticas Inteligentes
+```markdown
+Agente: "🔧 Acciones automáticas ejecutadas:
+
+         📝 **Documentación actualizada:**
+         • Referencias cruzadas agregadas automáticamente
+         • Índices de entidades actualizados
+
+         🔗 **Conexiones establecidas:**
+         • Nueva entidad vinculada a entidades relacionadas
+         • Documentos relacionados notificados
+
+         📊 **Validaciones técnicas:**
+         • Estándares de calidad verificados
+         • Optimizaciones sugeridas aplicadas
+
+         ¿Todo se ve correcto o necesita ajustes?"
+```
+
+---
+
 ## 🔍 Comandos y Consultas Avanzadas
 
 ### Comandos Especiales del Agente
@@ -347,12 +543,47 @@ Usuario: "activar modo taxonómico"
 Usuario: "modo 3 para modificaciones"
 ```
 
+#### Comandos para Nuevas Funcionalidades
+
+**Sistema de Autocompletado:**
+```markdown
+Usuario: "modo aprendizaje" → Activa tutoriales personalizados
+Usuario: "sugerencias" → Muestra sugerencias predictivas
+Usuario: "completar consulta" → Autocompleta consulta parcial
+```
+
+**Memoria Colectiva:**
+```markdown
+Usuario: "contexto histórico" → Busca contexto de decisiones pasadas
+Usuario: "qué decidimos sobre X" → Consulta decisiones históricas
+Usuario: "evolución de Y" → Muestra timeline de cambios
+```
+
+**Detección de Conflictos:**
+```markdown
+Usuario: "detectar conflictos" → Análisis proactivo de conflictos potenciales
+Usuario: "resolver conflicto" → Inicia proceso de resolución colaborativa
+Usuario: "simular impacto" → Evalúa impacto antes de cambios
+```
+
+**Agente Proactivo:**
+```markdown
+Usuario: "monitorear cambios" → Activa monitoreo continuo
+Usuario: "acciones automáticas" → Ejecuta validaciones automáticas
+Usuario: "estado del proyecto" → Reporte de estado actualizado
+```
+
 #### Consultas de Estado
 ```markdown
 **Estado Actual:**
 - "¿En qué modo estoy?"
 - "¿Cuál es mi rol detectado?"
 - "¿Qué dominio estoy consultando?"
+
+**Estado de Funcionalidades Avanzadas:**
+- "¿Qué conocimiento tácito has capturado?"
+- "¿Cuántos conflictos has detectado?"
+- "¿Qué simulaciones has ejecutado?"
 
 **Información del Sistema:**
 - "¿Qué modelo estás usando?"
@@ -371,6 +602,11 @@ Usuario: "modo 3 para modificaciones"
 - "¿Cómo me puedes ayudar como guionista?"
 - "¿Qué herramientas tienes para game designers?"
 - "¿Cómo apoyas el trabajo de 3D artists?"
+
+**Ayuda para Funcionalidades Avanzadas:**
+- "¿Cómo funciona la memoria colectiva?"
+- "¿Cómo detectar conflictos tempranamente?"
+- "¿Cómo usar el análisis predictivo?"
 ```
 
 ### Consultas Multi-Dominio
@@ -579,6 +815,58 @@ Agente: "Optimizando uso de recursos:
          Memoria liberada: 2GB"
 ```
 
+### Problemas con Funcionalidades Avanzadas
+
+#### Memoria Colectiva no captura decisiones:
+```markdown
+Usuario: "No está capturando mis decisiones importantes"
+Agente: "Solucionando problema de memoria colectiva:
+         🔍 Verificando integración con Discord/Slack
+         ⚙️ Ajustando umbral de importancia
+         📝 Revisando patrones de detección
+         ¿Puede dar un ejemplo de decisión no capturada?"
+```
+
+#### Conflictos no detectados:
+```markdown
+Usuario: "No detectó un conflicto obvio entre roles"
+Agente: "Mejorando detección de conflictos:
+         📊 Actualizando patrones de conflicto
+         🔍 Mejorando análisis de contexto
+         ⚙️ Ajustando sensibilidad de detección
+         ¿Puede describir el conflicto no detectado?"
+```
+
+#### Simulaciones muy lentas:
+```markdown
+Usuario: "Las simulaciones tardan demasiado"
+Agente: "Optimizando sistema de simulación:
+         ⚡ Reduciendo complejidad de escenarios
+         🧠 Optimizando modelos de predicción
+         💾 Implementando cache de simulaciones
+         Tiempo de respuesta mejorado significativamente"
+```
+
+#### Sugerencias poco relevantes:
+```markdown
+Usuario: "Las sugerencias no son útiles para mi rol"
+Agente: "Mejorando sistema de sugerencias:
+         🎯 Re-entrenando modelo para su rol específico
+         📚 Actualizando base de conocimiento de su dominio
+         🔧 Ajustando parámetros de relevancia
+         ¿Qué tipo de sugerencias serían más útiles?"
+```
+
+#### Monitoreo proactivo muy agresivo:
+```markdown
+Usuario: "Demasiadas notificaciones automáticas"
+Agente: "Ajustando monitoreo proactivo:
+         🔕 Reduciendo frecuencia de notificaciones
+         🎯 Filtrando por relevancia para su rol
+         ⚙️ Configurando umbrales personalizados
+         ¿Prefiere notificaciones más espaciadas?"
+```
+
 ---
 
 ## 📈 Mejores Prácticas de Uso
@@ -611,10 +899,12 @@ Agente: "Optimizando uso de recursos:
 graph TD
     A[Consulta narrativa específica] --> B[Modo 1: Investigación]
     B --> C[Análisis de contexto FES]
-    C --> D[Identificación de oportunidades]
-    D --> E[Modo 2: Sugerencias de estructura]
-    E --> F[Modo 3: Creación de contenido]
-    F --> G[Validación y ajustes]
+    C --> D[Memoria colectiva: ¿Qué decidimos antes?]
+    D --> E[Identificación de oportunidades]
+    E --> F[Modo 2: Sugerencias de estructura]
+    F --> G[Simulación: ¿Impacto en narrativa?]
+    G --> H[Modo 3: Creación de contenido]
+    H --> I[Validación y ajustes]
 ```
 
 #### Para Desarrollo Técnico (Game Designers)
@@ -622,9 +912,11 @@ graph TD
 graph TD
     A[Consulta mecánicas específicas] --> B[Modo 1: Análisis GDD]
     B --> C[Evaluación de balance]
-    C --> D[Modo 2: Propuestas de mejora]
-    D --> E[Modo 3: Ajustes técnicos]
-    E --> F[Validación de implementación]
+    C --> D[Simulación: ¿Qué impacto tendría este cambio?]
+    D --> E[Modo 2: Propuestas de mejora]
+    E --> F[Detección de conflictos: ¿Afecta a otros roles?]
+    F --> G[Modo 3: Ajustes técnicos]
+    G --> H[Validación de implementación]
 ```
 
 #### Para Producción 3D (Artistas 3D)
@@ -632,9 +924,65 @@ graph TD
 graph TD
     A[Consulta técnica específica] --> B[Modo 1: Consulta estándares]
     B --> C[Análisis de referencias]
-    C --> D[Modo 2: Sugerencias de optimización]
-    D --> E[Modo 3: Implementación técnica]
-    E --> F[Validación de performance]
+    C --> D[Agente proactivo: ¿Validaciones automáticas?]
+    D --> E[Modo 2: Sugerencias de optimización]
+    E --> F[Simulación: ¿Impacto en otros dominios?]
+    F --> G[Modo 3: Implementación técnica]
+    G --> H[Validación de performance]
+```
+
+### Mejores Prácticas para Funcionalidades Avanzadas
+
+#### Uso Efectivo de la Memoria Colectiva
+```markdown
+✅ **Buenas prácticas:**
+- Pregunte "qué decidimos sobre X" antes de proponer cambios
+- Use contexto histórico para justificar nuevas decisiones
+- Consulte evolución de elementos antes de modificarlos
+
+❌ **Evite:**
+- Ignorar contexto histórico en decisiones importantes
+- Proponer cambios sin revisar decisiones previas
+- No documentar decisiones importantes en canales monitoreados
+```
+
+#### Detección Proactiva de Conflictos
+```markdown
+✅ **Buenas prácticas:**
+- Consulte impacto potencial antes de cambios mayores
+- Considere perspectivas de otros roles automáticamente
+- Use el sistema de resolución cuando detecte conflictos
+
+❌ **Evite:**
+- Implementar cambios sin evaluar impacto cruzado
+- Ignorar alertas de conflictos potenciales
+- No consultar otros roles afectados por cambios
+```
+
+#### Uso Estratégico de Simulación
+```markdown
+✅ **Buenas prácticas:**
+- Simule cambios importantes antes de implementarlos
+- Explore múltiples escenarios alternativos
+- Use análisis predictivo para planificación estratégica
+
+❌ **Evite:**
+- Implementar cambios sin evaluar consecuencias
+- No considerar escenarios alternativos
+- Ignorar recomendaciones del sistema predictivo
+```
+
+#### Configuración Óptima del Agente Proactivo
+```markdown
+✅ **Buenas prácticas:**
+- Configure monitoreo solo para áreas relevantes a su rol
+- Use notificaciones inteligentes según urgencia
+- Aproveche acciones automáticas para tareas repetitivas
+
+❌ **Evite:**
+- Monitoreo excesivo que genere ruido innecesario
+- Ignorar validaciones automáticas importantes
+- No configurar adecuadamente niveles de sensibilidad
 ```
 
 ---
