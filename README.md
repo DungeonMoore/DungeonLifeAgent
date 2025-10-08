@@ -73,6 +73,9 @@ Willow se adapta automáticamente a tu especialización en el equipo DLE:
 - **Especialización por Roles**: Se adapta automáticamente a tu función profesional
 - **Modelos Locales**: Completamente offline usando tecnología avanzada
 - **Tres Modos Inteligentes**: Consultor, Taxonómico y Colaborador Activo
+- **Autocompletado Contextual**: Sugiere consultas relevantes antes de ejecutar búsquedas
+- **Indexación Incremental**: Detecta cambios en la documentación sin reconstrucciones completas
+- **Métricas de Rendimiento**: Registra latencia y cobertura por modo en tiempo real
 
 ### 🔒 **Seguridad y Confianza**
 - **Operaciones Controladas**: Cada acción requiere confirmación estricta
@@ -88,14 +91,27 @@ Willow se adapta automáticamente a tu especialización en el equipo DLE:
 git clone https://github.com/DungeonMoore/DungeonLifeAgent.git
 cd DungeonLifeAgent
 
-# 2. Instalar dependencias
+# 2. Instalar dependencias (modo editable recomendado para el MVP funcional)
 pip install -r requirements.txt
+pip install -e .
 
 # 3. Configuración inicial - Willow te guiará
 python scripts/setup_agent.py
 
 # 4. Primer encuentro con Willow
 python run_agent.py
+
+# También puedes usar la nueva interfaz de línea de comandos
+willow --mode consultor "¿Qué describe la arquitectura técnica?"
+
+# Solicitar sugerencias antes de preguntar
+willow --suggest-queries "trinity"
+
+# Refrescar el índice tras actualizar un archivo
+willow --refresh-index Documentacion/19_Plan_Ejecucion_Proyecto.md
+
+# Revisar métricas de latencia y cobertura (misma sesión)
+willow --metrics
 ```
 
 **Willow susurra:** *"Bienvenido al bosque digital. ¿En qué rama del conocimiento deseas posarte hoy?"*
