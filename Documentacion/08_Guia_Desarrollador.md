@@ -75,6 +75,102 @@ graph TB
 
 ---
 
+## 🔁 Componentes liberados en Fase 3
+
+### Memoria Colectiva (`CollectiveMemory`)
+
+La memoria colectiva ahora forma parte del `DungeonLifeAgent` y puede invocarse directamente:
+
+```python
+from dungeon_life_agent import DungeonLifeAgent
+
+agent = DungeonLifeAgent()
+
+record = agent.capture_memory_event(
+    channel="kickoff_equipo",
+    author="productor",
+    content="Se acordó habilitar pipelines integrados",
+    tags=["fase3", "pipelines"],
+    decisions=["alto:activar dashboard de métricas"]
+)
+
+historial = agent.search_memory("pipelines fase3")
+canales = agent.list_memory_channels()
+```
+
+Los registros se persisten en `Documentacion/memoria_colectiva.json`, permitiendo sincronizar bitácoras y decisiones tácticas.【F:Documentacion/17_Memoria_Colectiva_y_Conocimiento_Tacito.md†L55-L144】
+
+### Navegador de Pipelines (`AssetPipelineNavigator`)
+
+```python
+from dungeon_life_agent import DungeonLifeAgent
+
+agent = DungeonLifeAgent()
+
+for pipeline in agent.list_asset_pipelines():
+    print(pipeline)
+
+print(agent.describe_asset_pipeline("unreal"))
+```
+
+Los pipelines cubren Blender, Unreal, React/TypeScript y backend Python según la arquitectura técnica del Atlas.【F:Documentacion/02_Arquitectura_Tecnica.md†L25-L64】
+
+### Dataset Analysis Agent
+
+```python
+plan = agent.plan_dataset_analysis({
+    "formato": "csv",
+    "dominio": "economia",
+    "tamanio": "150000"
+})
+
+print(plan.render())
+```
+
+El plan generado incluye verificaciones de calidad, pasos exploratorios y recomendaciones de automatización alineadas con la gobernanza de datos del proyecto.【F:Documentacion/14_Roadmap_y_Evolucion.md†L169-L199】
+
+### Plantillas colaborativas (`CollaborationTemplates`)
+
+```python
+bitacora = agent.apply_template(
+    "bitacora_sesion",
+    {
+        "rol": "productor",
+        "objetivo": "Coordinación Fase 3",
+        "decisiones": "Activar tableros y memoria colectiva",
+        "seguimiento": "Revisar métricas la próxima iteración"
+    }
+)
+```
+
+### Integración con modelos de lenguaje locales
+
+Se añadió un cliente ligero para Ollama (`OllamaClient`) y un conector genérico `generate_with_model` dentro del agente. Para habilitarlo:
+
+```python
+from dungeon_life_agent import DungeonLifeAgent
+from dungeon_life_agent.llm import OllamaClient
+
+ollama = OllamaClient(model="llama3")
+agent = DungeonLifeAgent(language_model=ollama)
+
+respuesta = agent.generate_with_model("Resume la última decisión de memoria colectiva")
+```
+
+El permiso `invoke_llm` está restringido al modo colaborador para mantener controlado el uso del modelo externo.
+
+### Métricas extendidas y exportación
+
+```python
+agent.register_productivity(role="productor", tasks_completed=4, session_minutes=45)
+path = agent.metrics.export_csv("reportes/metrics.csv")
+print(path)
+```
+
+El tablero incorpora consultas, productividad y decisiones, permitiendo alimentar reportes de gobernanza.【F:Documentacion/05_Taxonomia_y_Nomenclatura.md†L210-L244】
+
+---
+
 ## 🔌 APIs y Puntos de Extensión
 
 ### API Principal del Agente

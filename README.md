@@ -76,6 +76,9 @@ Willow se adapta automáticamente a tu especialización en el equipo DLE:
 - **Autocompletado Contextual**: Sugiere consultas relevantes antes de ejecutar búsquedas
 - **Indexación Incremental**: Detecta cambios en la documentación sin reconstrucciones completas
 - **Métricas de Rendimiento**: Registra latencia y cobertura por modo en tiempo real
+- **Memoria Colectiva**: Captura decisiones tácticas y búsquedas históricas desde la CLI
+- **Pipelines Integrados**: Navegador de Blender, Unreal, React/TS y backend Python listo para producción
+- **Preparado para LLMs Locales**: Cliente Ollama integrado para generar resúmenes y automatizaciones
 
 ### 🧪 **Evidencia de Fase 2**
 - Consulta la ficha de verificación [`Documentacion/20_Verificacion_Fase_2.md`](./Documentacion/20_Verificacion_Fase_2.md) para revisar el mapeo entre funcionalidades anunciadas y su implementación.
@@ -143,6 +146,7 @@ willow --metrics
 | **Integración Atlas** | ✅ **Activa** | Sistema de 6 pilares operativo |
 | **Especialización** | ✅ **Funcional** | Detección automática por roles |
 | **Modelos IA** | 🔄 **En desarrollo** | Integración con GGUF local |
+| **Memoria & Pipelines** | ✅ **Fase 3** | Memoria colectiva, pipelines y métricas extendidas |
 
 ### 🎯 **Próximos Pasos**
 1. **Implementación del núcleo IA** - Los modelos que darán vida completa a Willow

@@ -64,10 +64,10 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 4. **Expansión de cobertura**: aumentar precisión de búsqueda y personalización por rol siguiendo métricas del roadmap.【F:Documentacion/14_Roadmap_y_Evolucion.md†L132-L167】
 
 ### Fase 3 – Memoria Colectiva e Integraciones (8 semanas)
-1. **Memoria colectiva**: captura de conocimiento tácito desde canales colaborativos y motor de consulta histórica.【F:Documentacion/14_Roadmap_y_Evolucion.md†L169-L199】
-2. **Integraciones pipelines**: completar Asset Pipeline Navigator (Blender, Unreal, React/TS, Python backend) y Dataset Analysis Agent conforme a la arquitectura.【F:Documentacion/02_Arquitectura_Tecnica.md†L25-L64】
-3. **Automatización colaborativa**: ampliar capacidades del modo Colaborador con plantillas y operaciones controladas.
-4. **Medición continua**: seguimiento de métricas de productividad y captura de decisiones para retroalimentar roadmap v2.x.
+1. **Memoria colectiva** ✅: el módulo `CollectiveMemory` registra interacciones multicanal y expone consulta histórica desde CLI y API, con persistencia en `Documentacion/memoria_colectiva.json`.
+2. **Integraciones pipelines** ✅: `AssetPipelineNavigator` incorpora flujos para Blender, Unreal, React/TS y Python backend junto con `DatasetAnalysisAgent` para planes de validación de datos conforme a la arquitectura.【F:Documentacion/02_Arquitectura_Tecnica.md†L25-L64】
+3. **Automatización colaborativa** ✅: el modo Colaborador dispone de plantillas controladas (`CollaborationTemplates`), captura estructurada de decisiones y conectores a pipelines.
+4. **Medición continua** ✅: `MetricsRegistry` amplía el tablero con métricas de productividad, decisiones y exportación CSV para retroalimentar el roadmap v2.x.【F:Documentacion/14_Roadmap_y_Evolucion.md†L169-L199】
 
 ## 5. Gobernanza y Entregables
 - **Cadencia**: revisiones quincenales con responsables por rol para alinear backlog y asegurar cumplimiento de métricas.
@@ -86,8 +86,8 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 | Pérdida de conocimiento tácito | Medio | Introducir memoria colectiva y consulta histórica en Fase 3.【F:Documentacion/14_Roadmap_y_Evolucion.md†L169-L199】 |
 
 ## 7. Próximos Pasos Inmediatos
-1. Publicar un tablero de métricas (CSV o Markdown) que consuma la salida de `MetricsRegistry` para seguimiento histórico.
-2. Priorizar la optimización de relevancia ajustando pesos de TF-IDF y explorando embeddings híbridos.
-3. Ampliar la documentación operativa incorporando guías de mantenimiento del índice y bitácoras de sesiones por rol.
+1. Integrar embeddings híbridos con el nuevo cliente de modelos (Ollama u otros) para enriquecer respuestas contextuales.
+2. Refinar el modelo de memoria colectiva con resúmenes automáticos generados por el LM configurado.
+3. Automatizar sincronización de pipelines con tableros externos (Jira/Notion) manteniendo la trazabilidad definida en la Fase 3.
 
 ---

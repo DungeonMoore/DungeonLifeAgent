@@ -1,0 +1,15 @@
+Defaulting to user installation because normal site-packages is not writeable
+Collecting requests
+  Downloading requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+Collecting charset_normalizer<4,>=2 (from requests)
+  Downloading charset_normalizer-3.4.3-cp313-cp313-win_amd64.whl.metadata (37 kB)
+Requirement already satisfied: idna<4,>=2.5 in c:\users\hybri\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from requests) (3.10)
+Collecting urllib3<3,>=1.21.1 (from requests)
+  Downloading urllib3-2.5.0-py3-none-any.whl.metadata (6.5 kB)
+Requirement already satisfied: certifi>=2017.4.17 in c:\users\hybri\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from requests) (2025.10.5)
+Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+Downloading charset_normalizer-3.4.3-cp313-cp313-win_amd64.whl (107 kB)
+Downloading urllib3-2.5.0-py3-none-any.whl (129 kB)
+Installing collected packages: urllib3, charset_normalizer, requests
+
+Successfully installed charset_normalizer-3.4.3 requests-2.32.5 urllib3-2.5.0

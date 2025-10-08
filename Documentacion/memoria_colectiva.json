@@ -1,0 +1,45 @@
+[
+  {
+    "identifier": "demo-0001",
+    "timestamp": "2024-06-08T00:00:00Z",
+    "channel": "kickoff_equipo",
+    "author": "productor",
+    "summary": "Kickoff Fase 3 con foco en memoria colectiva e integraciones.",
+    "content": "Se definieron responsables para memoria colectiva, pipelines creativos y automatización colaborativa.",
+    "tags": [
+      "fase3",
+      "gobernanza"
+    ],
+    "decisions": [
+      "alto:activar tableros de métricas quincenales"
+    ]
+  },
+  {
+    "identifier": "bfea1d07-99c7-4f76-9323-5d8a5e254558",
+    "timestamp": "2025-10-08T05:30:53Z",
+    "channel": "general",
+    "author": "tester",
+    "summary": "Integración pipeline",
+    "content": "Se integró pipeline Blender",
+    "tags": [
+      "pipeline"
+    ],
+    "decisions": [
+      "medio:documentar"
+    ]
+  },
+  {
+    "identifier": "cbedeaf5-7c26-457f-8ccc-f17796a7d77f",
+    "timestamp": "2025-10-08T05:31:01+00:00",
+    "channel": "general",
+    "author": "tester",
+    "summary": "Integración pipeline",
+    "content": "Se integró pipeline Blender",
+    "tags": [
+      "pipeline"
+    ],
+    "decisions": [
+      "medio:documentar"
+    ]
+  }
+]

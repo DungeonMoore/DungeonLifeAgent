@@ -5,6 +5,7 @@ Summary: MVP funcional del Dungeon Life Agent (Willow)
 Author: Dungeon Life Agent Team
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.31.0
 
 ---
 title: "🌿 Willow - El Guardián Digital del Ecosistema Dungeon Life"
@@ -81,6 +82,16 @@ Willow se adapta automáticamente a tu especialización en el equipo DLE:
 - **Especialización por Roles**: Se adapta automáticamente a tu función profesional
 - **Modelos Locales**: Completamente offline usando tecnología avanzada
 - **Tres Modos Inteligentes**: Consultor, Taxonómico y Colaborador Activo
+- **Autocompletado Contextual**: Sugiere consultas relevantes antes de ejecutar búsquedas
+- **Indexación Incremental**: Detecta cambios en la documentación sin reconstrucciones completas
+- **Métricas de Rendimiento**: Registra latencia y cobertura por modo en tiempo real
+- **Memoria Colectiva**: Captura decisiones tácticas y búsquedas históricas desde la CLI
+- **Pipelines Integrados**: Navegador de Blender, Unreal, React/TS y backend Python listo para producción
+- **Preparado para LLMs Locales**: Cliente Ollama integrado para generar resúmenes y automatizaciones
+
+### 🧪 **Evidencia de Fase 2**
+- Consulta la ficha de verificación [`Documentacion/20_Verificacion_Fase_2.md`](./Documentacion/20_Verificacion_Fase_2.md) para revisar el mapeo entre funcionalidades anunciadas y su implementación.
+- Allí encontrarás instrucciones paso a paso para ejecutar autocompletado, refresco incremental y reporte de métricas desde la CLI o `run_agent.py`.
 
 ### 🔒 **Seguridad y Confianza**
 - **Operaciones Controladas**: Cada acción requiere confirmación estricta
@@ -108,6 +119,15 @@ python run_agent.py
 
 # También puedes usar la nueva interfaz de línea de comandos
 willow --mode consultor "¿Qué describe la arquitectura técnica?"
+
+# Solicitar sugerencias antes de preguntar
+willow --suggest-queries "trinity"
+
+# Refrescar el índice tras actualizar un archivo
+willow --refresh-index Documentacion/19_Plan_Ejecucion_Proyecto.md
+
+# Revisar métricas de latencia y cobertura (misma sesión)
+willow --metrics
 ```
 
 **Willow susurra:** *"Bienvenido al bosque digital. ¿En qué rama del conocimiento deseas posarte hoy?"*
@@ -135,6 +155,7 @@ willow --mode consultor "¿Qué describe la arquitectura técnica?"
 | **Integración Atlas** | ✅ **Activa** | Sistema de 6 pilares operativo |
 | **Especialización** | ✅ **Funcional** | Detección automática por roles |
 | **Modelos IA** | 🔄 **En desarrollo** | Integración con GGUF local |
+| **Memoria & Pipelines** | ✅ **Fase 3** | Memoria colectiva, pipelines y métricas extendidas |
 
 ### 🎯 **Próximos Pasos**
 1. **Implementación del núcleo IA** - Los modelos que darán vida completa a Willow

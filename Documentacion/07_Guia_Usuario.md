@@ -55,6 +55,17 @@ Contexto activo: [Dominio identificado]
 ¿En qué puedo ayudarte hoy?
 ```
 
+### Novedades Fase 3 – Memoria Colectiva e Integraciones
+
+Willow incorpora nuevas capacidades orientadas a colaboración continua y control operativo:
+
+- **Memoria colectiva**: registra acuerdos y hallazgos con `memoria registrar canal;autor;resumen;contenido[;tags][;decisiones]` y consulta con `memoria buscar`.
+- **Pipelines integrados**: explora flujos oficiales con `pipeline listar` y `pipeline ver <nombre>`.
+- **Análisis de datasets**: genera planes automáticos mediante `dataset analizar formato=csv dominio=narrativa tamanio=12000`.
+- **Plantillas colaborativas**: usa `plantilla listar` y `plantilla aplicar <nombre> campo=valor ...` para documentar entregables.
+- **Métricas extendidas**: exporta un snapshot con `metricas export reportes/metrics.csv` y registra productividad usando `productividad <rol> <tareas> <minutos>`.
+- **Integración LM**: configura un modelo (ej. Ollama) y utiliza `lm generar <prompt>` para redactar resúmenes o decisiones asistidas.
+
 #### 3. Primera Consulta de Prueba
 
 ```
