@@ -109,7 +109,10 @@ python run_agent.py
 willow --mode consultor "¿Qué describe la arquitectura técnica?"
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -122,6 +125,9 @@ willow --refresh-index Documentacion/19_Plan_Ejecucion_Proyecto.md
 # Revisar métricas de latencia y cobertura (misma sesión)
 willow --metrics
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

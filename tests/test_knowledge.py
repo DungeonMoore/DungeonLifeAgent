@@ -12,11 +12,6 @@ def test_list_documents_returns_all_markdown_files():
     index = DocumentationIndex("Documentacion")
     docs = index.list_documents()
     assert any(doc.endswith("00_README_Principal.md") for doc in map(str, docs))
-<<<<<<< ours
-<<<<<<< ours
-=======
-=======
->>>>>>> theirs
 
 
 def test_suggest_returns_titles_by_prefix():
@@ -39,7 +34,3 @@ def test_refresh_updates_modified_documents(tmp_path):
     index.refresh(paths=[source])
     results = index.search("dragones")
     assert results, "La búsqueda debería reflejar el nuevo contenido"
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs

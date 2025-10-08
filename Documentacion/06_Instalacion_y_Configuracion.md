@@ -1092,6 +1092,10 @@ La versión mínima viable del Dungeon Life Agent incluida en este repositorio p
 - Herramientas de consulta accesibles desde CLI (`willow`) y una interfaz interactiva (`run_agent.py`).
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+- Autocompletado asistido, refresco incremental del índice y métricas de rendimiento durante la sesión.
+>>>>>>> theirs
 =======
 - Autocompletado asistido, refresco incremental del índice y métricas de rendimiento durante la sesión.
 >>>>>>> theirs
@@ -1110,7 +1114,11 @@ python scripts/setup_agent.py
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 # Lanzar la interfaz interactiva
+=======
+# Lanzar la interfaz interactiva con autocompletado y métricas
+>>>>>>> theirs
 =======
 # Lanzar la interfaz interactiva con autocompletado y métricas
 >>>>>>> theirs
@@ -1123,7 +1131,10 @@ python run_agent.py
 willow --mode taxonomico --role productor "Preparar entregables del MVP"
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -1136,6 +1147,9 @@ willow --refresh-index Documentacion/05_Taxonomia_y_Nomenclatura.md
 # Revisar métricas de latencia acumuladas (misma sesión de CLI)
 willow --metrics
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -1157,7 +1171,10 @@ PYTHONPATH=. pytest
 Estas instrucciones garantizan que cualquier guardián pueda replicar el MVP funcional antes de avanzar a la integración con modelos GGUF.
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -1168,6 +1185,9 @@ Estas instrucciones garantizan que cualquier guardián pueda replicar el MVP fun
 - `refrescar [ruta.md]` → fuerza la reindexación incremental (requiere modo colaborador en la configuración).
 - `metricas` → imprime latencia promedio, máxima y número de resultados por modo recopilados en la sesión.
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

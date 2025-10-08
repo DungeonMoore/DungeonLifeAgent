@@ -1,32 +1,13 @@
-<<<<<<< ours
-<<<<<<< ours
 """Capa de conocimiento ligera para el MVP del Dungeon Life Agent."""
-=======
-"""Capa de conocimiento ligera para el Dungeon Life Agent."""
->>>>>>> theirs
-=======
-"""Capa de conocimiento ligera para el Dungeon Life Agent."""
->>>>>>> theirs
 
 from __future__ import annotations
 
 import math
 import pathlib
 import re
-<<<<<<< ours
-<<<<<<< ours
-from dataclasses import dataclass
-from typing import Iterable, List, Sequence
-=======
 from collections import Counter
 from dataclasses import dataclass
 from typing import Iterable, Sequence
->>>>>>> theirs
-=======
-from collections import Counter
-from dataclasses import dataclass
-from typing import Iterable, Sequence
->>>>>>> theirs
 
 
 _TOKEN_RE = re.compile(r"[\wáéíóúñü]+", re.IGNORECASE)
@@ -58,11 +39,6 @@ class SearchResult:
     score: float
 
 
-<<<<<<< ours
-<<<<<<< ours
-=======
-=======
->>>>>>> theirs
 @dataclass
 class _IndexedDocument:
     path: pathlib.Path
@@ -70,41 +46,18 @@ class _IndexedDocument:
     sections: list[DocumentSection]
 
 
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
 class DocumentationIndex:
     """Indexa la carpeta de documentación usando una métrica TF-IDF ligera."""
 
     def __init__(self, root: str | pathlib.Path):
-<<<<<<< ours
-<<<<<<< ours
-        self.root = pathlib.Path(root)
-=======
         self.root = pathlib.Path(root).expanduser().resolve()
->>>>>>> theirs
-=======
-        self.root = pathlib.Path(root).expanduser().resolve()
->>>>>>> theirs
         if not self.root.exists():
             raise FileNotFoundError(f"No se encontró la carpeta de documentación: {self.root}")
+        self._documents: dict[pathlib.Path, _IndexedDocument] = {}
+        self._suggestion_catalog: list[tuple[str, str]] = []
         self.sections: list[DocumentSection] = []
         self._idf: dict[str, float] = {}
-<<<<<<< ours
-<<<<<<< ours
-        self._load_sections()
-        self._build_index()
-=======
-        self._documents: dict[pathlib.Path, _IndexedDocument] = {}
-        self._suggestion_catalog: list[tuple[str, str]] = []
         self.refresh()
->>>>>>> theirs
-=======
-        self._documents: dict[pathlib.Path, _IndexedDocument] = {}
-        self._suggestion_catalog: list[tuple[str, str]] = []
-        self.refresh()
->>>>>>> theirs
 
     # ------------------------------------------------------------------
     # API pública
@@ -128,39 +81,6 @@ class DocumentationIndex:
         return scores[:limit]
 
     def list_documents(self) -> list[pathlib.Path]:
-<<<<<<< ours
-<<<<<<< ours
-        seen = []
-        for section in self.sections:
-            if section.document_path not in seen:
-                seen.append(section.document_path)
-        return seen
-
-    # ------------------------------------------------------------------
-    # Construcción del índice
-    def _load_sections(self) -> None:
-        for path in sorted(self.root.glob("*.md")):
-            metadata, body = _split_front_matter(path.read_text(encoding="utf-8"))
-            for title, level, content in _split_sections(body):
-                tokens = tuple(_tokenize(content))
-                if not tokens:
-                    continue
-                self.sections.append(
-                    DocumentSection(
-                        document_path=path,
-                        title=title,
-                        content=content,
-                        metadata=dict(metadata),
-                        heading_level=level,
-                        tokens=tokens,
-                    )
-                )
-
-    def _build_index(self) -> None:
-        total_sections = len(self.sections)
-=======
-=======
->>>>>>> theirs
         return sorted((doc.path for doc in self._documents.values()), key=lambda path: path.name)
 
     def refresh(self, paths: Iterable[str | pathlib.Path] | None = None) -> None:
@@ -229,10 +149,7 @@ class DocumentationIndex:
         if total_sections == 0:
             self._idf = {}
             return
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
+
         doc_freqs: dict[str, int] = {}
         for section in self.sections:
             for token in set(section.tokens):
@@ -242,11 +159,6 @@ class DocumentationIndex:
             for token, freq in doc_freqs.items()
         }
 
-<<<<<<< ours
-<<<<<<< ours
-=======
-=======
->>>>>>> theirs
     def _build_suggestions(self) -> None:
         if not self.sections:
             self._suggestion_catalog = []
@@ -302,10 +214,6 @@ def _parse_sections(path: pathlib.Path) -> Iterable[DocumentSection]:
             tokens=tokens,
         )
 
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
 
 def _split_front_matter(text: str) -> tuple[dict[str, str], str]:
     if text.startswith("---"):
@@ -354,11 +262,6 @@ def _term_frequencies(tokens: Sequence[str]) -> dict[str, float]:
     return frequencies
 
 
-<<<<<<< ours
-<<<<<<< ours
-=======
-=======
->>>>>>> theirs
 def _resolve_to_root(root: pathlib.Path, path: str | pathlib.Path) -> pathlib.Path:
     candidate = pathlib.Path(path).expanduser()
     if not candidate.is_absolute():
@@ -368,8 +271,4 @@ def _resolve_to_root(root: pathlib.Path, path: str | pathlib.Path) -> pathlib.Pa
     return candidate
 
 
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
 __all__ = ["DocumentationIndex", "SearchResult", "DocumentSection"]

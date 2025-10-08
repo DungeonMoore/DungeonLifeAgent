@@ -2,9 +2,15 @@
 title: "Plan de Ejecución - Dungeon Life Agent"
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 version: "0.1.0"
 date: "2024-06-06"
 status: "draft"
+=======
+version: "0.3.0"
+date: "2024-06-08"
+status: "en progreso"
+>>>>>>> theirs
 =======
 version: "0.3.0"
 date: "2024-06-08"
@@ -32,8 +38,11 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 ## 3. Fases de Trabajo
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 ## 3. Estado Actual del Proyecto (junio 2024)
@@ -65,6 +74,9 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 
 ## 4. Fases de Trabajo
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -93,7 +105,11 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 ## 4. Gobernanza y Entregables
+=======
+## 5. Gobernanza y Entregables
+>>>>>>> theirs
 =======
 ## 5. Gobernanza y Entregables
 >>>>>>> theirs
@@ -109,7 +125,11 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 ## 5. Riesgos y Mitigaciones
+=======
+## 6. Riesgos y Mitigaciones
+>>>>>>> theirs
 =======
 ## 6. Riesgos y Mitigaciones
 >>>>>>> theirs
@@ -125,6 +145,7 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 ## 6. Próximos Pasos Inmediatos
 1. Confirmar recursos disponibles para Fase 0 y establecer responsables por módulo arquitectónico.
 2. Priorizar backlog inicial para el MVP, resaltando tareas críticas del Core Engine y Knowledge Layer.
@@ -132,11 +153,16 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 =======
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 ## 7. Próximos Pasos Inmediatos
 1. Publicar un tablero de métricas (CSV o Markdown) que consuma la salida de `MetricsRegistry` para seguimiento histórico.
 2. Priorizar la optimización de relevancia ajustando pesos de TF-IDF y explorando embeddings híbridos.
 3. Ampliar la documentación operativa incorporando guías de mantenimiento del índice y bitácoras de sesiones por rol.
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

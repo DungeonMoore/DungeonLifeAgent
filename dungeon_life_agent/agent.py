@@ -2,30 +2,15 @@
 
 from __future__ import annotations
 
-<<<<<<< ours
-<<<<<<< ours
-=======
 import pathlib
 import time
->>>>>>> theirs
-=======
-import pathlib
-import time
->>>>>>> theirs
 from dataclasses import dataclass
 from typing import Iterable, Optional
 
 from .config import AgentConfiguration, RoleProfile, load_config
 from .knowledge import DocumentationIndex, SearchResult
+from .metrics import MetricsRegistry
 from .mode_manager import ModeManager
-<<<<<<< ours
-<<<<<<< ours
-=======
-from .metrics import MetricsRegistry
->>>>>>> theirs
-=======
-from .metrics import MetricsRegistry
->>>>>>> theirs
 from .tools import ToolIntegration
 
 
@@ -70,46 +55,22 @@ class DungeonLifeAgent:
         tool_integration: ToolIntegration | None = None,
         configuration: AgentConfiguration | None = None,
         mode_manager: ModeManager | None = None,
-<<<<<<< ours
-<<<<<<< ours
-=======
         metrics: MetricsRegistry | None = None,
->>>>>>> theirs
-=======
-        metrics: MetricsRegistry | None = None,
->>>>>>> theirs
     ) -> None:
         self.config = configuration or load_config(config_path)
         self.knowledge = knowledge_index or DocumentationIndex(documentation_path)
         self.mode_manager = mode_manager or ModeManager.from_config(self.config)
         self.tools = tool_integration or ToolIntegration()
-<<<<<<< ours
-<<<<<<< ours
-=======
         self.metrics = metrics or MetricsRegistry()
->>>>>>> theirs
-=======
-        self.metrics = metrics or MetricsRegistry()
->>>>>>> theirs
 
     # ------------------------------------------------------------------
     # Operaciones de alto nivel
     def query(self, message: str, *, mode: str = "consultor", role: Optional[str] = None, limit: int = 3) -> AgentResponse:
         self.mode_manager.ensure(mode, "query")
         role_profile = self.config.get_role(role)
-<<<<<<< ours
-<<<<<<< ours
-        results = self.knowledge.search(message, limit=limit)
-=======
         start = time.perf_counter()
         results = self.knowledge.search(message, limit=limit)
         self.metrics.record_search(mode, time.perf_counter() - start, len(results))
->>>>>>> theirs
-=======
-        start = time.perf_counter()
-        results = self.knowledge.search(message, limit=limit)
-        self.metrics.record_search(mode, time.perf_counter() - start, len(results))
->>>>>>> theirs
         return self._build_response(mode=mode, role=role_profile, query=message, results=results)
 
     def list_documents(self, *, mode: str = "consultor") -> list[str]:
@@ -118,37 +79,17 @@ class DungeonLifeAgent:
 
     def classify(self, message: str, *, mode: str = "taxonomico") -> AgentResponse:
         self.mode_manager.ensure(mode, "classify")
-<<<<<<< ours
-<<<<<<< ours
-        results = self.knowledge.search(message, limit=5)
-=======
         start = time.perf_counter()
         results = self.knowledge.search(message, limit=5)
         self.metrics.record_search(mode, time.perf_counter() - start, len(results))
->>>>>>> theirs
-=======
-        start = time.perf_counter()
-        results = self.knowledge.search(message, limit=5)
-        self.metrics.record_search(mode, time.perf_counter() - start, len(results))
->>>>>>> theirs
         return self._build_taxonomy_response(mode=mode, results=results)
 
     def suggest_actions(self, message: str, *, mode: str = "colaborador", role: Optional[str] = None) -> AgentResponse:
         self.mode_manager.ensure(mode, "suggest_actions")
         role_profile = self.config.get_role(role)
-<<<<<<< ours
-<<<<<<< ours
-        results = self.knowledge.search(message, limit=3)
-=======
         start = time.perf_counter()
         results = self.knowledge.search(message, limit=3)
         self.metrics.record_search(mode, time.perf_counter() - start, len(results))
->>>>>>> theirs
-=======
-        start = time.perf_counter()
-        results = self.knowledge.search(message, limit=3)
-        self.metrics.record_search(mode, time.perf_counter() - start, len(results))
->>>>>>> theirs
         return self._build_collaboration_response(mode=mode, role=role_profile, query=message, results=results)
 
     def use_tool(self, name: str, *, mode: str = "colaborador", **kwargs) -> str:
@@ -161,11 +102,6 @@ class DungeonLifeAgent:
             return self.tools.git_status(kwargs["path"])
         raise ValueError(f"Herramienta desconocida: {name}")
 
-<<<<<<< ours
-<<<<<<< ours
-=======
-=======
->>>>>>> theirs
     def suggest_queries(self, prefix: str, *, mode: str = "consultor", limit: int = 5) -> list[str]:
         self.mode_manager.ensure(mode, "suggest_queries")
         return self.knowledge.suggest(prefix, limit=limit)
@@ -185,10 +121,6 @@ class DungeonLifeAgent:
                 flat[f"{key}.{metric}"] = float(value)
         return flat
 
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
     # ------------------------------------------------------------------
     # Construcción de respuestas
     def _build_response(

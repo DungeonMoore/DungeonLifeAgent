@@ -2,20 +2,6 @@
   "modes": {
     "consultor": {
       "description": "Modo de lectura y asesoría contextual.",
-<<<<<<< ours
-<<<<<<< ours
-      "permissions": ["query", "list_documents"]
-    },
-    "taxonomico": {
-      "description": "Modo orientado a clasificación, mapas de conocimiento y consistencia.",
-      "permissions": ["query", "list_documents", "classify"]
-    },
-    "colaborador": {
-      "description": "Modo que acompaña el trabajo activo con sugerencias y uso de herramientas seguras.",
-      "permissions": ["query", "list_documents", "classify", "suggest_actions", "use_tools"]
-=======
-=======
->>>>>>> theirs
       "permissions": ["query", "list_documents", "suggest_queries"]
     },
     "taxonomico": {
@@ -33,10 +19,6 @@
         "suggest_queries",
         "refresh_index"
       ]
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
     }
   },
   "roles": {
