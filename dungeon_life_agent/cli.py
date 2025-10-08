@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from typing import Optional
 
 from .agent import DungeonLifeAgent
+from .banner import print_welcome
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -30,6 +32,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: Optional[list[str]] = None) -> int:
+    if argv is None and not os.environ.get("WILLOW_HIDE_BANNER"):
+        print_welcome()
+
     parser = build_parser()
     args = parser.parse_args(argv)
 
@@ -78,8 +83,13 @@ def main(argv: Optional[list[str]] = None) -> int:
             print(suggestion)
         return 0
 
+    if args.message and args.message.strip().lower() == "help":
+        parser.print_help()
+        return 0
+
     if not args.message:
-        parser.error("Debes proporcionar un mensaje o usar --list-docs/--tool")
+        parser.print_help()
+        return 0
 
     response = agent.query(args.message, mode=args.mode, role=args.role, limit=args.limit)
     print(response.format_text())

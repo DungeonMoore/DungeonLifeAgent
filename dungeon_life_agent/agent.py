@@ -9,8 +9,8 @@ from typing import Iterable, Optional
 
 from .config import AgentConfiguration, RoleProfile, load_config
 from .knowledge import DocumentationIndex, SearchResult
-from .metrics import MetricsRegistry
 from .mode_manager import ModeManager
+from .metrics import MetricsRegistry
 from .tools import ToolIntegration
 
 

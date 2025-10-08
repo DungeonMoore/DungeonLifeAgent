@@ -107,14 +107,6 @@ python run_agent.py
 
 # También puedes usar la nueva interfaz de línea de comandos
 willow --mode consultor "¿Qué describe la arquitectura técnica?"
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 
 # Solicitar sugerencias antes de preguntar
 willow --suggest-queries "trinity"
@@ -124,13 +116,6 @@ willow --refresh-index Documentacion/19_Plan_Ejecucion_Proyecto.md
 
 # Revisar métricas de latencia y cobertura (misma sesión)
 willow --metrics
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 ```
 
 **Willow susurra:** *"Bienvenido al bosque digital. ¿En qué rama del conocimiento deseas posarte hoy?"*

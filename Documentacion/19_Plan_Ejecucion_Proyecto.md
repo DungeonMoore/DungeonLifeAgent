@@ -1,26 +1,8 @@
 ---
 title: "Plan de Ejecución - Dungeon Life Agent"
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-version: "0.1.0"
-date: "2024-06-06"
-status: "draft"
-=======
 version: "0.3.0"
 date: "2024-06-08"
 status: "en progreso"
->>>>>>> theirs
-=======
-version: "0.3.0"
-date: "2024-06-08"
-status: "en progreso"
->>>>>>> theirs
-=======
-version: "0.3.0"
-date: "2024-06-08"
-status: "en progreso"
->>>>>>> theirs
 author: "IA Assistant"
 tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 ---
@@ -36,15 +18,6 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 - Priorizar la implementación del Core Engine con integración llama.cpp, gestión de contexto y generador adaptativo como cimiento de todas las funcionalidades.【F:Documentacion/02_Arquitectura_Tecnica.md†L67-L100】
 - Diseñar desde el inicio los conectores críticos de la Knowledge Layer (Atlas Navigator, Taxonomy Engine, Entity Resolver) que permiten la comprensión nativa del ecosistema DLE.【F:Documentacion/02_Arquitectura_Tecnica.md†L102-L139】
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-## 3. Fases de Trabajo
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 ## 3. Estado Actual del Proyecto (junio 2024)
 - Willow está operando como motor de búsqueda semántica local siguiendo el flujo planificado de recuperación de conocimiento para documentación markdown.
 - El MVP funcional cubre consultas en modo Consultor, clasificación taxonómica y recomendaciones colaborativas mediante `run_agent.py` y la interfaz CLI incluida.
@@ -73,13 +46,6 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 - Instrumentar alertas automáticas cuando la latencia supere los objetivos (<1s) o la cobertura caiga por debajo del umbral definido.
 
 ## 4. Fases de Trabajo
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 ### Fase 0 – Preparación (2 semanas)
 1. **Infraestructura local**: scripts de instalación, dependencias y verificación de modelos GGUF en entorno controlado.
 2. **Índice inicial**: construcción del Documentation Indexer y Asset Indexer mínimos para disponibilidad de conocimiento base.
@@ -103,19 +69,7 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 3. **Automatización colaborativa**: ampliar capacidades del modo Colaborador con plantillas y operaciones controladas.
 4. **Medición continua**: seguimiento de métricas de productividad y captura de decisiones para retroalimentar roadmap v2.x.
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-## 4. Gobernanza y Entregables
-=======
 ## 5. Gobernanza y Entregables
->>>>>>> theirs
-=======
-## 5. Gobernanza y Entregables
->>>>>>> theirs
-=======
-## 5. Gobernanza y Entregables
->>>>>>> theirs
 - **Cadencia**: revisiones quincenales con responsables por rol para alinear backlog y asegurar cumplimiento de métricas.
 - **Entregables clave**:
   - Documento de infraestructura (scripts y configuración de modelos).
@@ -123,19 +77,7 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
   - Reportes de métricas (performance, estabilidad, cobertura, satisfacción).
   - Registro de decisiones tácticas incorporado al sistema de memoria colectiva.
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-## 5. Riesgos y Mitigaciones
-=======
 ## 6. Riesgos y Mitigaciones
->>>>>>> theirs
-=======
-## 6. Riesgos y Mitigaciones
->>>>>>> theirs
-=======
-## 6. Riesgos y Mitigaciones
->>>>>>> theirs
 | Riesgo | Impacto | Mitigación |
 |--------|---------|------------|
 | Complejidad del Atlas y taxonomía | Alto | Implementar validadores automáticos y documentación cruzada temprana.【F:Documentacion/02_Arquitectura_Tecnica.md†L102-L139】 |
@@ -143,28 +85,9 @@ tags: ["plan", "ejecucion", "roadmap", "implementacion"]
 | Alineación inter-roles | Medio | Mantener pruebas y retroalimentación por especialización en cada iteración.【F:Documentacion/00_README_Principal.md†L118-L181】 |
 | Pérdida de conocimiento tácito | Medio | Introducir memoria colectiva y consulta histórica en Fase 3.【F:Documentacion/14_Roadmap_y_Evolucion.md†L169-L199】 |
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-## 6. Próximos Pasos Inmediatos
-1. Confirmar recursos disponibles para Fase 0 y establecer responsables por módulo arquitectónico.
-2. Priorizar backlog inicial para el MVP, resaltando tareas críticas del Core Engine y Knowledge Layer.
-3. Definir indicadores base (tiempo de respuesta, precisión de búsqueda, satisfacción por rol) para comparar contra metas del roadmap.
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 ## 7. Próximos Pasos Inmediatos
 1. Publicar un tablero de métricas (CSV o Markdown) que consuma la salida de `MetricsRegistry` para seguimiento histórico.
 2. Priorizar la optimización de relevancia ajustando pesos de TF-IDF y explorando embeddings híbridos.
 3. Ampliar la documentación operativa incorporando guías de mantenimiento del índice y bitácoras de sesiones por rol.
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 
 ---

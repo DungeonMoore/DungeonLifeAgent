@@ -1,4 +1,4 @@
-"""Capa de conocimiento ligera para el MVP del Dungeon Life Agent."""
+"""Capa de conocimiento ligera para el Dungeon Life Agent."""
 
 from __future__ import annotations
 
@@ -53,10 +53,10 @@ class DocumentationIndex:
         self.root = pathlib.Path(root).expanduser().resolve()
         if not self.root.exists():
             raise FileNotFoundError(f"No se encontró la carpeta de documentación: {self.root}")
-        self._documents: dict[pathlib.Path, _IndexedDocument] = {}
-        self._suggestion_catalog: list[tuple[str, str]] = []
         self.sections: list[DocumentSection] = []
         self._idf: dict[str, float] = {}
+        self._documents: dict[pathlib.Path, _IndexedDocument] = {}
+        self._suggestion_catalog: list[tuple[str, str]] = []
         self.refresh()
 
     # ------------------------------------------------------------------
@@ -149,7 +149,6 @@ class DocumentationIndex:
         if total_sections == 0:
             self._idf = {}
             return
-
         doc_freqs: dict[str, int] = {}
         for section in self.sections:
             for token in set(section.tokens):

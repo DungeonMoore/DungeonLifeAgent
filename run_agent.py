@@ -4,12 +4,7 @@ from __future__ import annotations
 
 from dungeon_life_agent.agent import DungeonLifeAgent
 
-HELP_TEXT = """Comandos disponibles:
-  • sugerencias <prefijo> [limite] → muestra autocompletado
-  • refrescar [ruta.md] → reconstruye el índice (modo colaborador)
-  • metricas → imprime métricas acumuladas de la sesión
-  • salir → termina la interacción
-Cualquier otro texto se interpreta como consulta en modo consultor."""
+HELP_TEXT = """Comandos disponibles:\n  • sugerencias <prefijo> [limite] → muestra autocompletado\n  • refrescar [ruta.md] → reconstruye el índice (modo colaborador)\n  • metricas → imprime métricas acumuladas de la sesión\n  • salir → termina la interacción\nCualquier otro texto se interpreta como consulta en modo consultor."""
 
 
 def main() -> None:
@@ -21,7 +16,6 @@ def main() -> None:
         except (EOFError, KeyboardInterrupt):
             print()  # nueva línea
             break
-
         lowered = message.lower()
         if lowered in {"salir", "exit", "quit"}:
             break
@@ -59,7 +53,6 @@ def main() -> None:
             print(agent.get_metrics_report())
             print()
             continue
-
         if not message:
             continue
         response = agent.query(message)
