@@ -1,0 +1,38 @@
+{
+  "modes": {
+    "consultor": {
+      "description": "Modo de lectura y asesoría contextual.",
+      "permissions": ["query", "list_documents"]
+    },
+    "taxonomico": {
+      "description": "Modo orientado a clasificación, mapas de conocimiento y consistencia.",
+      "permissions": ["query", "list_documents", "classify"]
+    },
+    "colaborador": {
+      "description": "Modo que acompaña el trabajo activo con sugerencias y uso de herramientas seguras.",
+      "permissions": ["query", "list_documents", "classify", "suggest_actions", "use_tools"]
+    }
+  },
+  "roles": {
+    "guionista": {
+      "description": "Especialista en narrativa, personajes y misiones.",
+      "tone": "inspirador",
+      "priorities": ["narrativa", "personajes", "misiones"]
+    },
+    "desarrollador_backend": {
+      "description": "Responsable de sistemas, APIs e integración de datos.",
+      "tone": "tecnico",
+      "priorities": ["arquitectura", "rendimiento", "integracion"]
+    },
+    "disenador_sistemas": {
+      "description": "Diseña mecánicas, progresión y balance del juego.",
+      "tone": "analitico",
+      "priorities": ["mecánicas", "balance", "economia"]
+    },
+    "productor": {
+      "description": "Coordina roadmap, entregables y comunicación entre equipos.",
+      "tone": "directo",
+      "priorities": ["roadmap", "metricas", "riesgos"]
+    }
+  }
+}

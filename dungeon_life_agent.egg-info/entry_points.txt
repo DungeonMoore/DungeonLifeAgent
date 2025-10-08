@@ -1,0 +1,2 @@
+[console_scripts]
+willow = dungeon_life_agent.cli:main

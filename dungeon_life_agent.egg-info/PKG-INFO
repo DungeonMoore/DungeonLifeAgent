@@ -1,3 +1,11 @@
+Metadata-Version: 2.4
+Name: dungeon-life-agent
+Version: 0.1.0
+Summary: MVP funcional del Dungeon Life Agent (Willow)
+Author: Dungeon Life Agent Team
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
 ---
 title: "🌿 Willow - El Guardián Digital del Ecosistema Dungeon Life"
 author: "Dungeon Life Agent Team"

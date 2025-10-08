@@ -1081,3 +1081,43 @@ class SystemHealthChecker:
 
 Este documento proporciona una guía completa para instalar y configurar el Dungeon Life Agent con todas las tecnologías necesarias para su funcionamiento óptimo dentro del ecosistema DLE.</result>
 </attempt_completion>
+---
+
+## ⚙️ Puesta en Marcha del MVP Funcional
+
+La versión mínima viable del Dungeon Life Agent incluida en este repositorio proporciona:
+
+- Indexación local de toda la carpeta `Documentacion/` mediante `dungeon_life_agent.knowledge`.
+- Gestión de modos y permisos alineada con el diseño original (`consultor`, `taxonomico`, `colaborador`).
+- Herramientas de consulta accesibles desde CLI (`willow`) y una interfaz interactiva (`run_agent.py`).
+
+### Pasos Rápidos
+
+```bash
+# Instalar en modo editable para mantener el código sincronizado
+pip install -e .
+
+# Ejecutar comprobaciones básicas de entorno
+python scripts/setup_agent.py
+
+# Lanzar la interfaz interactiva
+python run_agent.py
+
+# Alternativa: usar la CLI con selección de modo y rol
+willow --mode taxonomico --role productor "Preparar entregables del MVP"
+```
+
+### Configuración Personalizada
+
+- El archivo `dungeon_life_agent/config/default_config.json` describe roles, tonos y permisos.
+- Puede duplicarse como `config.local.json` y pasarse con `--config` en la CLI.
+- Los modos adicionales se pueden añadir extendiendo `default_config.json` y ajustando los permisos.
+
+### Validación Rápida
+
+```bash
+# Ejecutar las pruebas automatizadas (requiere pytest)
+PYTHONPATH=. pytest
+```
+
+Estas instrucciones garantizan que cualquier guardián pueda replicar el MVP funcional antes de avanzar a la integración con modelos GGUF.
