@@ -66,42 +66,49 @@ class BannerVariant:
 
         panel_lines: List[str] = [top] + [pad_line(line) for line in lines] + [bottom]
 
-        terminal_width = width or shutil.get_terminal_size((80, 20)).columns
-        centered = [line.center(terminal_width) for line in panel_lines]
+        # Simplificar centrado para mejor compatibilidad con Windows
+        try:
+            terminal_width = width or shutil.get_terminal_size((80, 20)).columns
+            centered = [line.center(terminal_width) for line in panel_lines]
+        except (OSError, AttributeError):
+            # Fallback si hay problemas con el tamaño de terminal
+            centered = panel_lines
+
         return "\n".join(centered)
 
 
 def _build_classic_variant() -> BannerVariant:
-    beard = "\x1b[38;2;245;245;245m"
-    skin = "\x1b[38;2;255;220;180m"
-    shading = "\x1b[38;2;230;190;140m"
-    eye_white = "\x1b[38;2;255;255;255m"
-    pupil = "\x1b[38;2;40;40;40m"
-    mouth = "\x1b[38;2;210;120;100m"
+    # Colores optimizados para Windows PowerShell
+    hair_beard = "\x1b[97m"  # Blanco brillante para cabello y barba
+    skin = "\x1b[37m"        # Blanco para piel
+    eye_white = "\x1b[97m"   # Blanco brillante para ojos
+    pupil = "\x1b[30m"       # Negro para pupilas
+    mouth = "\x1b[31m"       # Rojo para boca
+    cheeks = "\x1b[37m"      # Blanco para mejillas
     reset = "\x1b[0m"
 
     color_lines = [
-        f"{beard}      ⠀⣀⣤⣤⣤⣀⠀⠀      {reset}",
-        f"{beard}   ⣤⠞⠋⠉⠉⠉⠉⠙⠳⣄   {reset}",
-        f"{beard} ⣴⠋ {skin} ⠀⣀⣀⣀⣀⠀ {beard} ⠙⣦ {reset}",
-        f"{beard}⣼⡇ {skin} ⣰{eye_white}◕{pupil}◉{eye_white}◕{skin}⣆ {beard} ⢸⣧{reset}",
-        f"{beard}⣿⡇ {skin}⢸⣿⣿⣿⣿⣿⡇{beard} ⢸⣿{reset}",
-        f"{beard}⣿⡇ {skin}⢸⣿{mouth}⠉⠉{skin}⣿⡇{beard} ⢸⣿{reset}",
-        f"{beard}⣿⡇ {skin} ⠘⠿⠿⠿⠟⠀ {beard} ⢸⣿{reset}",
-        f"{beard}⠹⣧⡀⠀⠀{shading}⣀⣀{beard}⠀⠀⢀⣼⠏{reset}",
-        f"{beard}  ⠙⠻⢶⣶⣶⣶⡶⠟⠋  {reset}",
+        f"{hair_beard}      ⠀⠀⠀⠀⠀⠀⠀⠀      {reset}",
+        f"{hair_beard}  ⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀  {reset}",
+        f"{hair_beard}⠀⠀⠀⠀⢀⣶⣶⣄⠀⠀⠀⠀{reset}",
+        f"{hair_beard}⠀⠀⠀⢠⣿⣿⣿⣿⠀⠀⠀{reset}",
+        f"{hair_beard}⠀⢀⣤⣴⣿⣿⣿⣿⣤⣄⠀{reset}",
+        f"{hair_beard}⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄{reset}",
+        f"{hair_beard}⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷{reset}",
+        f"{hair_beard}⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿{reset}",
+        f"{hair_beard}⠙⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠁{reset}",
     ]
 
     monochrome_lines = [
-        "      ⠀⣀⣤⣤⣤⣀⠀⠀      ",
-        "   ⣤⠞⠋⠉⠉⠉⠉⠙⠳⣄   ",
-        " ⣴⠋   ⠀⣀⣀⣀⣀⠀   ⠙⣦ ",
-        "⣼⡇  ⣰◕◉◕⣆  ⢸⣧",
-        "⣿⡇  ⢸⣿⣿⣿⣿⣿⡇ ⢸⣿",
-        "⣿⡇  ⢸⣿⠉⠉⣿⡇ ⢸⣿",
-        "⣿⡇   ⠘⠿⠿⠿⠟   ⢸⣿",
-        "⠹⣧⡀   ⣀⣀   ⢀⣼⠏",
-        "  ⠙⠻⢶⣶⣶⣶⡶⠟⠋  ",
+        "      ⠀⠀⠀⠀⠀⠀⠀⠀      ",
+        "  ⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀  ",
+        "⠀⠀⠀⠀⢀⣶⣶⣄⠀⠀⠀⠀",
+        "⠀⠀⠀⢠⣿⣿⣿⣿⠀⠀⠀",
+        "⠀⢀⣤⣴⣿⣿⣿⣿⣤⣄⠀",
+        "⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄",
+        "⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷",
+        "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+        "⠙⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠁",
     ]
 
     return BannerVariant(name="classic", color_lines=color_lines, monochrome_lines=monochrome_lines)
@@ -135,9 +142,16 @@ def print_welcome(stream: object | None = None) -> None:
     banner_text = render_banner(stream=stream)
     print(banner_text, file=stream)
 
-    width = shutil.get_terminal_size((80, 20)).columns
-    subtitle = "Willow CLI v0.1".center(width)
-    instructions = "Escribe willow help para ver los comandos disponibles.".center(width)
+    # Simplificar centrado para mejor compatibilidad con Windows
+    try:
+        width = shutil.get_terminal_size((80, 20)).columns
+        subtitle = "Willow CLI v0.1".center(width)
+        instructions = "Escribe willow help para ver los comandos disponibles.".center(width)
+    except (OSError, AttributeError):
+        # Fallback si hay problemas con el tamaño de terminal
+        subtitle = "Willow CLI v0.1"
+        instructions = "Escribe willow help para ver los comandos disponibles."
+
     print(subtitle, file=stream)
     print(instructions, file=stream)
     print("", file=stream)
