@@ -9,6 +9,7 @@ from typing import Optional
 
 from .agent import DungeonLifeAgent
 from .banner import print_welcome
+from .interactive import run_interactive
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -41,31 +42,19 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     # Si no hay argumentos, iniciar modo interactivo como python run_agent.py
     if argv is None and not args.message and not any([
-        args.list_docs, args.tool, args.classify, args.suggest,
-        args.suggest_queries, args.metrics, args.refresh_index
+        args.list_docs,
+        args.tool,
+        args.classify,
+        args.suggest,
+        args.suggest_queries,
+        args.metrics,
+        args.refresh_index,
     ]):
-        from .agent import DungeonLifeAgent
-        print("🌿 Iniciando modo interactivo... (escribe 'salir' para terminar)")
-        print()
-
         agent = DungeonLifeAgent()
-        while True:
-            try:
-                message = input("consulta> ").strip()
-            except (EOFError, KeyboardInterrupt):
-                print()  # nueva línea
-                break
-
-            if message.lower() in {"salir", "exit", "quit"}:
-                break
-
-            if not message:
-                continue
-
-            response = agent.query(message)
-            print(response.format_text())
-            print()
-
+        run_interactive(
+            agent,
+            greeting="🌿 Iniciando modo interactivo... (escribe 'salir' para terminar)\n",
+        )
         return 0
 
     agent = DungeonLifeAgent(documentation_path=args.docs, config_path=args.config)

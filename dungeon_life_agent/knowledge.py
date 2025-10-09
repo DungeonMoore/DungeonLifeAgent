@@ -9,6 +9,13 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import Iterable, Sequence
 
+from .embedding_gemma import EmbeddingGemma
+from .search_pipeline import (
+    HybridSearchPipeline,
+    PipelineSelection,
+    SearchPipelineConfig,
+)
+
 
 _TOKEN_RE = re.compile(r"[\wáéíóúñü]+", re.IGNORECASE)
 
@@ -49,31 +56,62 @@ class _IndexedDocument:
 class DocumentationIndex:
     """Indexa la carpeta de documentación usando una métrica TF-IDF ligera."""
 
-    def __init__(self, root: str | pathlib.Path):
+    def __init__(
+        self,
+        root: str | pathlib.Path,
+        *,
+        pipeline: HybridSearchPipeline | None = None,
+        embedder: EmbeddingGemma | None = None,
+        pipeline_config: SearchPipelineConfig | None = None,
+    ):
         self.root = pathlib.Path(root).expanduser().resolve()
         if not self.root.exists():
             raise FileNotFoundError(f"No se encontró la carpeta de documentación: {self.root}")
         self.sections: list[DocumentSection] = []
         self._idf: dict[str, float] = {}
+        self._avg_section_length: float = 0.0
         self._documents: dict[pathlib.Path, _IndexedDocument] = {}
         self._suggestion_catalog: list[tuple[str, str]] = []
+        if pipeline is not None:
+            self._pipeline = pipeline
+        else:
+            config = pipeline_config or SearchPipelineConfig()
+            self._pipeline = HybridSearchPipeline(embedder=embedder or EmbeddingGemma(), config=config)
         self.refresh()
 
     # ------------------------------------------------------------------
     # API pública
-    def search(self, query: str, limit: int = 3) -> list[SearchResult]:
+    def search(
+        self,
+        query: str,
+        limit: int = 3,
+        *,
+        role: str | None = None,
+        alpha: float | None = None,
+    ) -> list[SearchResult]:
         """Búsqueda mejorada con algoritmo matemático avanzado"""
         tokens = _tokenize_mejorado(query)
-        scores = []
         if not tokens:
             return []
-        query_freqs = _term_frequencies(tokens)
-        for section in self.sections:
-            score = self._calcular_relevancia_mejorada(tokens, section.tokens, query_freqs)
-            if score > 0:
-                scores.append(SearchResult(section=section, score=score))
-        scores.sort(key=lambda result: result.score, reverse=True)
-        return scores[:limit]
+        pool_target = max(limit, self._pipeline.config.lexical_top_k)
+        pool_size = min(pool_target, len(self.sections)) if self.sections else 0
+        candidates = self._stage_one(tokens, pool_size)
+        if not candidates:
+            return []
+        selections = self._pipeline.search(
+            query,
+            candidates,
+            limit=min(limit, len(candidates)),
+            role=role,
+            alpha_override=alpha,
+        )
+
+        total = len(selections)
+        results: list[SearchResult] = []
+        for position, selection in enumerate(selections):
+            chunk_section = self._build_chunk_section(selection, position, total)
+            results.append(SearchResult(section=chunk_section, score=selection.score))
+        return results
 
     def list_documents(self) -> list[pathlib.Path]:
         return sorted((doc.path for doc in self._documents.values()), key=lambda path: path.name)
@@ -128,37 +166,67 @@ class DocumentationIndex:
                 break
         return suggestions
 
-    def _calcular_relevancia_mejorada(self, query_tokens, section_tokens, query_freqs):
-        """Nueva ecuación matemática corregida para búsqueda precisa"""
+    def _bm25_score(self, query_tokens: Sequence[str], section_tokens: Sequence[str]) -> float:
+        if not query_tokens or not section_tokens or not self._idf:
+            return 0.0
 
-        # Componente 1: Matches Exactos (40% del peso total)
-        # Boost masivo para términos que aparecen exactamente
-        exact_matches = sum(1 for token in query_tokens if token in section_tokens)
-        exact_score = exact_matches * 10.0
+        avg_length = self._avg_section_length or 1.0
+        section_length = len(section_tokens)
+        if section_length == 0:
+            return 0.0
 
-        # Componente 2: TF-IDF Corregido (40% del peso total)
-        # CORRECCIÓN CRÍTICA: Solo una multiplicación por IDF, no dos
-        tfidf_score = 0.0
+        k1 = 1.5
+        b = 0.75
+        term_freqs = Counter(section_tokens)
+
+        score = 0.0
         for token in query_tokens:
-            if token in section_tokens and token in self._idf:
-                freq_query = query_freqs.get(token, 0.0)
-                freq_section = section_tokens.count(token) / len(section_tokens)
-                # TF-IDF corregido: freq_query * idf * freq_section (sin idf²)
-                tfidf_score += (freq_query * self._idf[token]) * freq_section
+            idf = self._idf.get(token)
+            if idf is None:
+                continue
+            freq = term_freqs.get(token, 0)
+            if freq == 0:
+                continue
+            numerator = freq * (k1 + 1)
+            denominator = freq + k1 * (1 - b + b * (section_length / avg_length))
+            score += idf * (numerator / denominator)
+        return score
 
-        # Componente 3: Cobertura de Consulta (20% del peso total)
-        # Mide qué porcentaje de términos de la consulta están cubiertos
-        query_terms_found = len(set(query_tokens) & set(section_tokens))
-        coverage_bonus = (query_terms_found / len(query_tokens)) * 5.0 if query_tokens else 0
+    def _stage_one(
+        self,
+        query_tokens: Sequence[str],
+        pool_size: int,
+    ) -> list[SearchResult]:
+        scores: list[SearchResult] = []
+        for section in self.sections:
+            score = self._bm25_score(query_tokens, section.tokens)
+            if score > 0:
+                scores.append(SearchResult(section=section, score=score))
+        scores.sort(key=lambda result: result.score, reverse=True)
+        return scores[:pool_size]
 
-        # Componente 4: Penalización por longitud (factor multiplicativo)
-        # Evita que secciones muy largas obtengan score alto por coincidencias casuales
-        length_penalty = min(1.0, 1000 / len(section_tokens)) if section_tokens else 0
-
-        # Cálculo del score final ponderado
-        score_final = (exact_score * 0.4 + tfidf_score * 0.4 + coverage_bonus * 0.2) * length_penalty
-
-        return score_final
+    def _build_chunk_section(
+        self,
+        selection: PipelineSelection,
+        position: int,
+        total: int,
+    ) -> DocumentSection:
+        original = selection.section
+        base_title = original.title or original.document_path.stem.replace("_", " ")
+        if total > 1:
+            suffix = f" · fragmento {position + 1}"
+        else:
+            suffix = ""
+        title = (base_title + suffix).strip() or original.document_path.stem
+        tokens = tuple(_tokenize(selection.chunk_text))
+        return DocumentSection(
+            document_path=original.document_path,
+            title=title,
+            content=selection.chunk_text,
+            metadata=dict(original.metadata),
+            heading_level=original.heading_level,
+            tokens=tokens,
+        )
 
     # ------------------------------------------------------------------
     # Construcción del índice
@@ -180,10 +248,16 @@ class DocumentationIndex:
         for section in self.sections:
             for token in set(section.tokens):
                 doc_freqs[token] = doc_freqs.get(token, 0) + 1
-        self._idf = {
-            token: math.log((1 + total_sections) / (1 + freq)) + 1
-            for token, freq in doc_freqs.items()
-        }
+        self._idf = {}
+        for token, freq in doc_freqs.items():
+            numerator = total_sections - freq + 0.5
+            denominator = freq + 0.5
+            if denominator == 0:
+                continue
+            self._idf[token] = math.log((numerator / denominator) + 1.0)
+
+        total_length = sum(len(section.tokens) for section in self.sections)
+        self._avg_section_length = total_length / total_sections if total_sections else 0.0
 
     def _build_suggestions(self) -> None:
         if not self.sections:
