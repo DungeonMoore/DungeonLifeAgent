@@ -13,6 +13,7 @@ from .embedding_gemma import EmbeddingGemma
 from .search_pipeline import (
     HybridSearchPipeline,
     PipelineSelection,
+    PipelineTrace,
     SearchPipelineConfig,
 )
 
@@ -115,6 +116,19 @@ class DocumentationIndex:
 
     def list_documents(self) -> list[pathlib.Path]:
         return sorted((doc.path for doc in self._documents.values()), key=lambda path: path.name)
+
+    def last_search_trace(self) -> PipelineTrace | None:
+        """Devuelve la traza completa de la última consulta ejecutada."""
+
+        return getattr(self._pipeline, "last_trace", None)
+
+    def last_search_prompt(self, *, max_items_per_stage: int = 3) -> str | None:
+        """Formato listo para prompt con detalles del pipeline más reciente."""
+
+        trace = self.last_search_trace()
+        if trace is None:
+            return None
+        return trace.to_prompt(max_items_per_stage=max_items_per_stage)
 
     def refresh(self, paths: Iterable[str | pathlib.Path] | None = None) -> None:
         """Reconstruye el índice detectando cambios incrementales."""
