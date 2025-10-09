@@ -53,6 +53,7 @@ Toda la información detallada se encuentra en la carpeta [`Documentacion/`](./D
 | **[🏷️ 05_Taxonomia_y_Nomenclatura.md](./Documentacion/05_Taxonomia_y_Nomenclatura.md)** | Sistema de clasificación | Arquitectos |
 | **[🚀 06_Instalacion_y_Configuracion.md](./Documentacion/06_Instalacion_y_Configuracion.md)** | Guía de instalación | Desarrolladores |
 | **[👥 07_Guia_Usuario.md](./Documentacion/07_Guia_Usuario.md)** | Guía completa de uso | Todos |
+| **[🛠️ DLE_400_01_Manual_CRAFT.md](./Documentacion/DLE_400_01_Manual_CRAFT.md)** | Metodología CRAFT detallada | Equipos creativos |
 
 ### 🎯 **Especialización por Roles**
 
@@ -107,6 +108,12 @@ python scripts/setup_agent.py
 
 # 4. Primer encuentro con Willow
 python run_agent.py
+
+# También puedes abrir la nueva interfaz visual minimalista
+python run_gui.py
+
+# O ejecutar una consulta rápida en modo headless (útil en CI)
+python run_gui.py --ask "¿Sabes qué es CRAFT?" --no-gui
 
 # También puedes usar la nueva interfaz de línea de comandos
 willow --mode consultor "¿Qué describe la arquitectura técnica?"
