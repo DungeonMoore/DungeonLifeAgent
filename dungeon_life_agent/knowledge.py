@@ -62,19 +62,14 @@ class DocumentationIndex:
     # ------------------------------------------------------------------
     # API pública
     def search(self, query: str, limit: int = 3) -> list[SearchResult]:
-        tokens = _tokenize(query)
+        """Búsqueda mejorada con algoritmo matemático avanzado"""
+        tokens = _tokenize_mejorado(query)
         scores = []
         if not tokens:
             return []
         query_freqs = _term_frequencies(tokens)
         for section in self.sections:
-            score = 0.0
-            section_freqs = _term_frequencies(section.tokens)
-            for token, q_freq in query_freqs.items():
-                if token not in section_freqs:
-                    continue
-                idf = self._idf.get(token, 0.0)
-                score += (q_freq * idf) * (section_freqs[token] * idf)
+            score = self._calcular_relevancia_mejorada(tokens, section.tokens, query_freqs)
             if score > 0:
                 scores.append(SearchResult(section=section, score=score))
         scores.sort(key=lambda result: result.score, reverse=True)
@@ -89,7 +84,7 @@ class DocumentationIndex:
         forced_paths = {_resolve_to_root(self.root, path) for path in paths} if paths else None
         discovered: set[pathlib.Path] = set()
 
-        for path in sorted(self.root.glob("*.md")):
+        for path in sorted(self.root.rglob("*.md")):
             discovered.add(path)
             needs_update = False
             record = self._documents.get(path)
@@ -132,6 +127,38 @@ class DocumentationIndex:
             if len(suggestions) >= limit:
                 break
         return suggestions
+
+    def _calcular_relevancia_mejorada(self, query_tokens, section_tokens, query_freqs):
+        """Nueva ecuación matemática corregida para búsqueda precisa"""
+
+        # Componente 1: Matches Exactos (40% del peso total)
+        # Boost masivo para términos que aparecen exactamente
+        exact_matches = sum(1 for token in query_tokens if token in section_tokens)
+        exact_score = exact_matches * 10.0
+
+        # Componente 2: TF-IDF Corregido (40% del peso total)
+        # CORRECCIÓN CRÍTICA: Solo una multiplicación por IDF, no dos
+        tfidf_score = 0.0
+        for token in query_tokens:
+            if token in section_tokens and token in self._idf:
+                freq_query = query_freqs.get(token, 0.0)
+                freq_section = section_tokens.count(token) / len(section_tokens)
+                # TF-IDF corregido: freq_query * idf * freq_section (sin idf²)
+                tfidf_score += (freq_query * self._idf[token]) * freq_section
+
+        # Componente 3: Cobertura de Consulta (20% del peso total)
+        # Mide qué porcentaje de términos de la consulta están cubiertos
+        query_terms_found = len(set(query_tokens) & set(section_tokens))
+        coverage_bonus = (query_terms_found / len(query_tokens)) * 5.0 if query_tokens else 0
+
+        # Componente 4: Penalización por longitud (factor multiplicativo)
+        # Evita que secciones muy largas obtengan score alto por coincidencias casuales
+        length_penalty = min(1.0, 1000 / len(section_tokens)) if section_tokens else 0
+
+        # Cálculo del score final ponderado
+        score_final = (exact_score * 0.4 + tfidf_score * 0.4 + coverage_bonus * 0.2) * length_penalty
+
+        return score_final
 
     # ------------------------------------------------------------------
     # Construcción del índice
@@ -249,6 +276,43 @@ def _split_sections(body: str) -> Iterable[tuple[str, int, str]]:
 
 def _tokenize(text: str) -> list[str]:
     return [match.group(0).lower() for match in _TOKEN_RE.finditer(text)]
+
+
+def _tokenize_mejorado(text: str) -> list[str]:
+    """Tokenización inteligente para español con mejoras avanzadas"""
+    import re
+    import unicodedata
+
+    # Normalización Unicode para manejar caracteres especiales españoles
+    text = unicodedata.normalize('NFD', text.lower())
+    text = re.sub(r'[^\w\sáéíóúñü]', ' ', text)
+
+    # Tokenización mejorada usando regex de palabras
+    tokens = re.findall(r'\b\w+\b', text)
+
+    # Stop words en español para filtrar ruido
+    stopwords = {
+        'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'es', 'son',
+        'era', 'eran', 'fueron', 'sea', 'sean', 'que', 'como', 'para', 'con',
+        'por', 'del', 'desde', 'hasta', 'ante', 'sobre', 'tras', 'durante',
+        'mediante', 'este', 'esta', 'estos', 'estas', 'este', 'esta',
+        'esto', 'estos', 'estas', 'aquel', 'aquella', 'aquellos', 'aquellas',
+        'uno', 'una', 'unos', 'unas', 'todo', 'toda', 'todos', 'todas',
+        'muy', 'más', 'menos', 'mucho', 'poco', 'también', 'tampoco',
+        'siempre', 'nunca', 'aquí', 'allí', 'allá', 'acá', 'hoy', 'ayer',
+        'mañana', 'anoche', 'ahora', 'entonces', 'después', 'antes',
+        'primero', 'primera', 'último', 'última', 'primero', 'primera',
+        'segundo', 'segunda', 'tercero', 'tercera', 'cuarto', 'cuarta',
+        'quinto', 'quinta', 'sexto', 'séptimo', 'octavo', 'noveno', 'décimo'
+    }
+
+    # Filtrar tokens: longitud mínima 3 caracteres, no stop words
+    tokens_filtrados = [
+        token for token in tokens
+        if len(token) >= 3 and token not in stopwords
+    ]
+
+    return tokens_filtrados
 
 
 def _term_frequencies(tokens: Sequence[str]) -> dict[str, float]:
