@@ -29,6 +29,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--limit", type=int, default=5, help="Número máximo de resultados o sugerencias")
     parser.add_argument("--refresh-index", action="store_true", help="Reconstruye el índice de documentación")
     parser.add_argument("--metrics", action="store_true", help="Muestra métricas acumuladas del agente")
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Incluye la traza detallada del pipeline en la salida",
+    )
     return parser
 
 
@@ -111,7 +116,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         return 0
 
     response = agent.query(args.message, mode=args.mode, role=args.role, limit=args.limit)
-    print(response.format_text())
+    print(response.format_text(show_debug=args.debug))
     return 0
 
 

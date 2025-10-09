@@ -4,16 +4,28 @@ from __future__ import annotations
 
 import math
 import re
-from dataclasses import dataclass
-from typing import Sequence, TYPE_CHECKING
+from dataclasses import asdict, dataclass, field
+from typing import Any, Iterable, Protocol, Sequence, TYPE_CHECKING
 
 from .embedding_gemma import EmbeddingGemma
+
+try:  # Import opcional para compatibilidad con el nuevo sistema avanzado
+    from .advanced_embeddings import EmbeddingQuality
+except Exception:  # pragma: no cover - dependencia opcional
+    EmbeddingQuality = None  # type: ignore
+
+
+class _SupportsEmbed(Protocol):
+    """Contrato mínimo requerido por el pipeline para generar embeddings."""
+
+    def embed(self, texts: Iterable[str]):
+        ...
 
 if TYPE_CHECKING:  # pragma: no cover
     from .knowledge import DocumentSection, SearchResult
 
 
-@dataclass
+@dataclass(frozen=True)
 class PipelineSelection:
     """Representa un fragmento listo para el LLM con trazabilidad completa."""
 
@@ -23,6 +35,93 @@ class PipelineSelection:
     lexical_score: float
     semantic_score: float
     bias_applied: float
+
+
+@dataclass(frozen=True)
+class StageHighlight:
+    """Resumen compacto de un elemento producido durante una etapa del pipeline."""
+
+    identifier: str
+    title: str
+    score: float
+    extra: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class StageReport:
+    """Detalle de ejecución de una etapa específica del pipeline."""
+
+    name: str
+    description: str
+    input_size: int
+    output_size: int
+    parameters: dict[str, Any] = field(default_factory=dict)
+    highlights: list[StageHighlight] = field(default_factory=list)
+
+
+@dataclass
+class PipelineTrace:
+    """Trazabilidad completa de una búsqueda, lista para análisis o prompts."""
+
+    query: str
+    alpha_used: float
+    config_snapshot: "SearchPipelineConfig"
+    stages: list[StageReport]
+    selections: list[PipelineSelection]
+    embedding_quality: "EmbeddingQuality | None"
+
+    def to_prompt(self, *, max_items_per_stage: int = 3) -> str:
+        """Construye una representación textual apta para un prompt de LLM."""
+
+        lines: list[str] = []
+        lines.append("### Consulta Analizada")
+        lines.append(f"- Texto: {self.query}")
+        lines.append(
+            "- Parámetros clave: "
+            f"α={self.alpha_used:.2f}, N={self.config_snapshot.fusion_top_n}, "
+            f"M={self.config_snapshot.mmr_limit}, λ={self.config_snapshot.mmr_lambda:.2f}, "
+            f"β={self.config_snapshot.role_bias:.2f}"
+        )
+        lines.append("- Estrategia de embeddings: " + self.config_snapshot.embedding_strategy)
+        if self.embedding_quality is not None:
+            lines.append(
+                "- Calidad de embeddings: "
+                f"‖v‖̄={self.embedding_quality.mean_magnitude:.3f}, "
+                f"σ={self.embedding_quality.stdev_magnitude:.3f}, "
+                f"cos̄={self.embedding_quality.pairwise_cosine:.3f}"
+            )
+
+        lines.append("\n### Etapas del Pipeline")
+        for position, stage in enumerate(self.stages, start=1):
+            lines.append(
+                f"{position}. {stage.name} ({stage.input_size}→{stage.output_size})"
+            )
+            if stage.description:
+                lines.append(f"   {stage.description}")
+            if stage.parameters:
+                ordered = sorted(stage.parameters.items())
+                params = ", ".join(f"{key}={value}" for key, value in ordered)
+                lines.append(f"   Parámetros: {params}")
+            highlights = stage.highlights[: max_items_per_stage]
+            for highlight in highlights:
+                lines.append(
+                    f"   - {highlight.title or highlight.identifier}"
+                    f" (score={highlight.score:.3f})"
+                )
+                if highlight.extra:
+                    extra_ordered = sorted(highlight.extra.items())
+                    for key, value in extra_ordered:
+                        lines.append(f"       · {key}: {value}")
+
+        lines.append("\n### Selección Final")
+        for selection in self.selections:
+            title = selection.section.title or selection.section.document_path.name
+            lines.append(
+                f"- {title} (score={selection.score:.3f}, "
+                f"lex={selection.lexical_score:.3f}, sem={selection.semantic_score:.3f}, "
+                f"bias={selection.bias_applied:.3f})"
+            )
+        return "\n".join(lines)
 
 
 @dataclass
@@ -39,14 +138,21 @@ class SearchPipelineConfig:
     chunk_overlap_tokens: int = 40
     role_bias: float = 0.05
     final_context_size: int = 5
+    embedding_strategy: str = "auto"
 
 
 class HybridSearchPipeline:
     """Implementa el flujo BM25 → RRF → MMR → Gemma descrito por el Arquitecto."""
 
-    def __init__(self, embedder: EmbeddingGemma | None = None, config: SearchPipelineConfig | None = None) -> None:
-        self.embedder = embedder or EmbeddingGemma()
+    def __init__(
+        self,
+        embedder: _SupportsEmbed | None = None,
+        config: SearchPipelineConfig | None = None,
+    ) -> None:
+        self.embedder: _SupportsEmbed = embedder or EmbeddingGemma()
         self.config = config or SearchPipelineConfig()
+        self.embedding_quality: EmbeddingQuality | None = None
+        self.last_trace: PipelineTrace | None = None
 
     # ------------------------------------------------------------------
     def search(
@@ -58,24 +164,97 @@ class HybridSearchPipeline:
         role: str | None = None,
         alpha_override: float | None = None,
     ) -> list[PipelineSelection]:
+        self.last_trace = None
+        stages: list[StageReport] = []
         if not candidates:
             return []
 
         alpha = self._clamp_alpha(alpha_override if alpha_override is not None else self.config.alpha)
         lexical_ranking = list(candidates)
+        lexical_highlights = [
+            StageHighlight(
+                identifier=result.section.identifier,
+                title=result.section.title or result.section.document_path.name,
+                score=result.score,
+                extra={
+                    "documento": result.section.document_path.name,
+                    "nivel": result.section.heading_level,
+                },
+            )
+            for result in lexical_ranking[:5]
+        ]
+        stages.append(
+            StageReport(
+                name="Recuperación Léxica",
+                description="Resultados iniciales BM25/TF-IDF",
+                input_size=len(candidates),
+                output_size=len(lexical_ranking),
+                parameters={"top_k": self.config.lexical_top_k},
+                highlights=lexical_highlights,
+            )
+        )
         fusion = self._apply_rrf(lexical_ranking)
         if not fusion:
             return []
 
-        query_vector = self.embedder.embed([query])[0]
+        fusion_highlights = [
+            StageHighlight(
+                identifier=result.section.identifier,
+                title=result.section.title or result.section.document_path.name,
+                score=result.score,
+                extra={"rrf": result.score},
+            )
+            for result in fusion[:5]
+        ]
+        stages.append(
+            StageReport(
+                name="Fusión Recíproca",
+                description="RRF para equilibrar rankings parciales",
+                input_size=len(lexical_ranking),
+                output_size=len(fusion),
+                parameters={"k": self.config.rrf_k},
+                highlights=fusion_highlights,
+            )
+        )
+
+        query_embedding = self._generate_embeddings([query])
+        query_vector = query_embedding[0]
 
         sections_for_mmr = fusion[: self.config.fusion_top_n]
-        section_vectors = self.embedder.embed([
-            self._section_to_text(candidate.section) for candidate in sections_for_mmr
-        ])
+        section_texts = [self._section_to_text(candidate.section) for candidate in sections_for_mmr]
+        section_vectors = self._generate_embeddings(section_texts)
         similarities = [_cosine_similarity(query_vector, vector) for vector in section_vectors]
         mmr_indices = self._apply_mmr(section_vectors, similarities)
         diversified_sections = [sections_for_mmr[index] for index in mmr_indices]
+
+        mmr_highlights = [
+            StageHighlight(
+                identifier=sections_for_mmr[index].section.identifier,
+                title=sections_for_mmr[index].section.title
+                or sections_for_mmr[index].section.document_path.name,
+                score=similarities[index],
+                extra={
+                    "rank": position + 1,
+                    "mmr_score": round(similarities[index], 4),
+                    "lexico": round(sections_for_mmr[index].score, 4),
+                },
+            )
+            for position, index in enumerate(mmr_indices[:5])
+        ]
+        stages.append(
+            StageReport(
+                name="MMR Diversificación",
+                description="Selecciona secciones diversas mediante Maximal Marginal Relevance",
+                input_size=len(sections_for_mmr),
+                output_size=len(diversified_sections),
+                parameters={
+                    "N": self.config.fusion_top_n,
+                    "M": self.config.mmr_limit,
+                    "λ": self.config.mmr_lambda,
+                },
+                highlights=mmr_highlights,
+            )
+        )
 
         chunk_candidates: list[_ChunkCandidate] = []
         for candidate in diversified_sections:
@@ -92,10 +271,60 @@ class HybridSearchPipeline:
         if not chunk_candidates:
             return []
 
+        chunk_highlights = [
+            StageHighlight(
+                identifier=candidate.section.identifier,
+                title=candidate.section.title or candidate.section.document_path.name,
+                score=float(len(candidate.chunk_text)),
+                extra={"tokens": _count_tokens(candidate.chunk_text)},
+            )
+            for candidate in chunk_candidates[:5]
+        ]
+        stages.append(
+            StageReport(
+                name="Segmentación",
+                description="División en fragmentos listos para embeddings",
+                input_size=len(diversified_sections),
+                output_size=len(chunk_candidates),
+                parameters={
+                    "chunk_tokens": self.config.chunk_size_tokens,
+                    "overlap": self.config.chunk_overlap_tokens,
+                },
+                highlights=chunk_highlights,
+            )
+        )
+
         chunk_texts = [candidate.chunk_text for candidate in chunk_candidates]
-        chunk_vectors = self.embedder.embed(chunk_texts)
+        chunk_vectors = self._generate_embeddings(chunk_texts)
+        if EmbeddingQuality is not None and hasattr(self.embedder, "quality_report"):
+            try:
+                self.embedding_quality = self.embedder.quality_report(chunk_vectors)  # type: ignore[arg-type]
+            except Exception:  # pragma: no cover - defensivo
+                self.embedding_quality = None
+        else:
+            self.embedding_quality = None
         semantic_scores = [_cosine_similarity(query_vector, vector) for vector in chunk_vectors]
         semantic_scores = [(value + 1.0) / 2.0 for value in semantic_scores]
+
+        semantic_highlights = [
+            StageHighlight(
+                identifier=candidate.section.identifier,
+                title=candidate.section.title or candidate.section.document_path.name,
+                score=semantic,
+                extra={"lexical": candidate.lexical_score},
+            )
+            for candidate, semantic in zip(chunk_candidates[:5], semantic_scores, strict=False)
+        ]
+        stages.append(
+            StageReport(
+                name="Scoring Semántico",
+                description="Embeddings + fusión híbrida",
+                input_size=len(chunk_candidates),
+                output_size=len(chunk_candidates),
+                parameters={"α": alpha, "β": self.config.role_bias},
+                highlights=semantic_highlights,
+            )
+        )
 
         lexical_values = [candidate.lexical_score for candidate in chunk_candidates]
         max_lexical = max(lexical_values) if lexical_values else 0.0
@@ -119,7 +348,49 @@ class HybridSearchPipeline:
 
         selections.sort(key=lambda item: item.score, reverse=True)
         final_limit = min(limit, self.config.final_context_size)
-        return selections[:final_limit]
+        final_selections = selections[:final_limit]
+
+        stages.append(
+            StageReport(
+                name="Selección Final",
+                description="Contexto enviado al LLM",
+                input_size=len(selections),
+                output_size=len(final_selections),
+                parameters={"final_context_size": self.config.final_context_size},
+                highlights=[
+                    StageHighlight(
+                        identifier=selection.section.identifier,
+                        title=selection.section.title
+                        or selection.section.document_path.name,
+                        score=selection.score,
+                        extra={
+                            "lex": round(selection.lexical_score, 4),
+                            "sem": round(selection.semantic_score, 4),
+                            "bias": round(selection.bias_applied, 4),
+                        },
+                    )
+                    for selection in final_selections
+                ],
+            )
+        )
+
+        self.last_trace = PipelineTrace(
+            query=query,
+            alpha_used=alpha,
+            config_snapshot=SearchPipelineConfig(**asdict(self.config)),
+            stages=stages,
+            selections=list(final_selections),
+            embedding_quality=self.embedding_quality,
+        )
+
+        return final_selections
+
+    # ------------------------------------------------------------------
+    def _generate_embeddings(self, texts: Iterable[str]) -> list[list[float]]:
+        try:
+            return self.embedder.embed(texts, strategy=self.config.embedding_strategy)
+        except TypeError:
+            return self.embedder.embed(texts)
 
     # ------------------------------------------------------------------
     def _apply_rrf(self, lexical_ranking: Sequence["SearchResult"]) -> list["SearchResult"]:
@@ -282,4 +553,11 @@ def _cosine_similarity(left: Sequence[float], right: Sequence[float]) -> float:
     return sum(l * r for l, r in zip(left, right, strict=False))
 
 
-__all__ = ["HybridSearchPipeline", "PipelineSelection", "SearchPipelineConfig"]
+__all__ = [
+    "HybridSearchPipeline",
+    "PipelineSelection",
+    "PipelineTrace",
+    "StageHighlight",
+    "StageReport",
+    "SearchPipelineConfig",
+]

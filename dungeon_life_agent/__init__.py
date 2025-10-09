@@ -11,4 +11,12 @@ integración con modelos de lenguaje locales como Ollama.
 from .agent import DungeonLifeAgent
 from .mode_manager import Mode
 
+try:  # pragma: no cover - import opcional para mantener compatibilidad
+    from .advanced_embeddings import EmbeddingSystem
+except Exception:  # pragma: no cover - disponibilidad opcional
+    EmbeddingSystem = None  # type: ignore
+
 __all__ = ["DungeonLifeAgent", "Mode"]
+
+if EmbeddingSystem is not None:  # pragma: no branch - exporta solo si está disponible
+    __all__.append("EmbeddingSystem")

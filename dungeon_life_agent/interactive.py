@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from typing import Optional
 
 from .agent import DungeonLifeAgent
@@ -250,6 +251,7 @@ def run_interactive(
             continue
 
         response = agent.query(message)
-        print(response.format_text())
+        show_debug = bool(os.environ.get("WILLOW_DEBUG_TRACE"))
+        print(response.format_text(show_debug=show_debug))
         print()
 
