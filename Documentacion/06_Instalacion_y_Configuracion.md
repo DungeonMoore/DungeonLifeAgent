@@ -1117,6 +1117,73 @@ willow --refresh-index Documentacion/05_Taxonomia_y_Nomenclatura.md
 willow --metrics
 ```
 
+### 🚀 Inicio Automático de Ollama
+
+**Nueva Característica:** El agente ahora inicia automáticamente Ollama cuando es necesario para funcionalidades de IA local.
+
+#### Funcionamiento Automático
+
+- **Detección Inteligente:** El sistema verifica si Ollama está ejecutándose en `localhost:11434`
+- **Inicio Transparente:** Si Ollama no está disponible, se inicia automáticamente en segundo plano
+- **Modelo por Defecto:** Se utiliza `gemma3:4b` como modelo principal para respuestas locales
+- **Gestión de Procesos:** El agente gestiona el ciclo de vida de Ollama automáticamente
+
+#### Comandos con Inicio Automático
+
+```bash
+# ✅ Estos comandos iniciarán Ollama automáticamente si es necesario:
+
+# Modo interactivo con IA local
+python run_agent.py
+
+# GUI mejorada con funcionalidades de IA
+python launch_gui_directly.py
+
+# Consultas específicas con modelo local
+willow --mode colaborador "Generar documentación técnica"
+
+# Sugerencias colaborativas con IA
+willow --suggest "Mejores prácticas para"
+```
+
+#### Indicadores de Estado
+
+- `[OK] Ollama ya esta disponible en http://localhost:11434` → Ollama ya ejecutándose
+- `[OK] Ollama iniciado correctamente - funcionalidades de IA local disponibles` → Iniciado automáticamente
+- `[WARNING] Continuando sin Ollama - funcionalidades basicas disponibles` → Continuando sin IA local
+
+#### Configuración del Modelo
+
+Para cambiar el modelo por defecto, modifique la configuración en `dungeon_life_agent/ollama_manager.py`:
+
+```python
+# Modelo actual (línea 23)
+model: str = "gemma3:4b"
+
+# Ejemplos de modelos alternativos:
+# model: str = "llama2:7b"
+# model: str = "codellama:7b"
+# model: str = "mistral:7b"
+```
+
+#### Solución de Problemas
+
+**Ollama no se inicia automáticamente:**
+```bash
+# Iniciar manualmente si es necesario
+ollama serve
+
+# Verificar que funciona
+curl http://localhost:11434/api/version
+```
+
+**Cambiar modelo si gemma3:4b no está disponible:**
+```python
+# Editar dungeon_life_agent/ollama_manager.py
+# Cambiar la línea 23: model: str = "TU_MODELO_PREFERIDO"
+# Reiniciar el agente
+```
+
 ### Configuración Personalizada
 
 - El archivo `dungeon_life_agent/config/default_config.json` describe roles, tonos y permisos.

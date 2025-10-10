@@ -12,7 +12,7 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 def main():
-    """Lanzar la GUI directamente."""
+    """Lanzar la GUI directamente con inicio automático de Ollama."""
     print("🚀 DUNGEON LIFE AGENT - GUI MEJORADA")
     print("=" * 50)
     print("🎯 Características implementadas:")
@@ -25,6 +25,21 @@ def main():
     print()
     print("💡 La ventana gráfica se abrirá en unos segundos...")
     print("⏳ Iniciando interfaz mejorada...")
+
+    # Iniciar Ollama automáticamente si no está disponible
+    try:
+        from dungeon_life_agent.ollama_manager import create_ollama_manager
+        print("🔍 Verificando disponibilidad de Ollama...")
+        ollama_manager = create_ollama_manager(verbose=True)
+        ollama_available = ollama_manager.ensure_running()
+
+        if ollama_available:
+            print("[OK] Ollama iniciado correctamente - funcionalidades de IA local disponibles")
+        else:
+            print("[WARNING] Ollama no disponible - continuando con funcionalidades basicas")
+    except Exception as e:
+        print(f"⚠️  Error con Ollama: {e}")
+        print("💡 Continuando sin funcionalidades de IA local...")
 
     try:
         from dungeon_life_agent.gui import launch_app

@@ -55,14 +55,54 @@ def main(argv: Optional[list[str]] = None) -> int:
         args.metrics,
         args.refresh_index,
     ]):
-        agent = DungeonLifeAgent()
+        # Iniciar Ollama automáticamente para modo interactivo
+        try:
+            from .ollama_manager import create_ollama_manager
+            from .llm import OllamaClient
+
+            ollama_manager = create_ollama_manager(verbose=False)
+            ollama_available = ollama_manager.ensure_running()
+
+            if ollama_available:
+                print("[OK] Ollama iniciado - funcionalidades de IA local disponibles")
+                ollama_client = OllamaClient(model=ollama_manager.model)
+                agent = DungeonLifeAgent(language_model=ollama_client)
+            else:
+                print("[WARNING] Ejecutando sin Ollama - funcionalidades basicas disponibles")
+                agent = DungeonLifeAgent()
+        except Exception:
+            print("[WARNING] Error iniciando Ollama - continuando con funcionalidades basicas")
+            agent = DungeonLifeAgent()
+
         run_interactive(
             agent,
             greeting="Iniciando modo interactivo... (escribe 'salir' para terminar)\n",
         )
         return 0
 
-    agent = DungeonLifeAgent(documentation_path=args.docs, config_path=args.config)
+    # Iniciar Ollama para comandos que podrían necesitar modelo de lenguaje
+    needs_ollama = args.message or args.suggest or args.classify
+    if needs_ollama:
+        try:
+            from .ollama_manager import create_ollama_manager
+            from .llm import OllamaClient
+
+            ollama_manager = create_ollama_manager(verbose=False)
+            ollama_available = ollama_manager.ensure_running()
+
+            if ollama_available:
+                ollama_client = OllamaClient(model=ollama_manager.model)
+                agent = DungeonLifeAgent(
+                    documentation_path=args.docs,
+                    config_path=args.config,
+                    language_model=ollama_client
+                )
+            else:
+                agent = DungeonLifeAgent(documentation_path=args.docs, config_path=args.config)
+        except Exception:
+            agent = DungeonLifeAgent(documentation_path=args.docs, config_path=args.config)
+    else:
+        agent = DungeonLifeAgent(documentation_path=args.docs, config_path=args.config)
 
     if args.refresh_index:
         paths = [args.message] if args.message else None

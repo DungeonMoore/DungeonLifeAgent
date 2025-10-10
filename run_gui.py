@@ -28,6 +28,17 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
+    # Iniciar Ollama automáticamente si no está disponible
+    try:
+        from dungeon_life_agent.ollama_manager import create_ollama_manager
+        ollama_manager = create_ollama_manager(verbose=False)  # Silencioso para GUI
+        ollama_available = ollama_manager.ensure_running()
+
+        if not ollama_available:
+            print("[WARNING] Ollama no disponible - funcionalidades de IA local limitadas")
+    except Exception:
+        pass  # Continuar sin Ollama si hay errores
+
     if args.ask:
         output = run_headless_query(args.ask, show_debug=args.debug)
         if output:
