@@ -274,6 +274,76 @@ class DungeonLifeAgent:
             raise RuntimeError("No hay cliente de modelo configurado. Inicializa DungeonLifeAgent con language_model.")
         return self.language_model.generate(prompt, **kwargs)
 
+    def get_agent_info_display(self) -> str:
+        """Genera información formateada sobre el agente para mostrar en CLI o GUI."""
+        lines: list[str] = []
+
+        # Header
+        lines.append("=" * 80)
+        lines.append("WILLOW - DUNGEON LIFE AGENT")
+        lines.append("=" * 80)
+        lines.append("")
+
+        # Resumen general del agente
+        lines.append("RESUMEN:")
+        lines.append("-" * 40)
+        lines.append("Sistema de asistencia avanzada para Dungeon Life Agent")
+        lines.append("Combina búsqueda semántica, modos operativos y memoria colectiva")
+        lines.append("")
+
+        # Capacidades principales
+        lines.append("CAPACIDADES PRINCIPALES:")
+        lines.append("-" * 40)
+        capabilities = [
+            "* Búsqueda inteligente en documentación técnica",
+            "* Tres modos operativos: consultor, taxonomico, colaborador",
+            "* Gestión de memoria colectiva y conocimiento tácito",
+            "* Análisis de datasets y planificación automática",
+            "* Sistema de métricas y productividad integrado",
+            "* Pipelines de procesamiento de assets",
+            "* Plantillas colaborativas para documentación"
+        ]
+
+        for capability in capabilities:
+            lines.append(capability)
+        lines.append("")
+
+        # Comandos disponibles
+        lines.append("COMANDOS DISPONIBLES:")
+        lines.append("-" * 40)
+        commands = [
+            "* sugerencias <prefijo> [limite] - muestra autocompletado",
+            "* refrescar [ruta.md] - reconstruye el indice",
+            "* metricas - imprime metricas acumuladas",
+            "* memoria registrar canal;autor;resumen;contenido",
+            "* memoria buscar <consulta> [limite]",
+            "* pipeline listar - muestra pipelines disponibles",
+            "* plantilla listar - plantillas disponibles",
+            "* productividad <rol> <tareas> <minutos>",
+            "* salir - termina la interaccion"
+        ]
+
+        for command in commands:
+            lines.append(command)
+        lines.append("")
+
+        # Información técnica
+        lines.append("INFORMACION TECNICA:")
+        lines.append("-" * 40)
+        tech_info = [
+            f"* Documentos indexados: {len(self.knowledge.list_documents())}",
+            f"* Canales de memoria: {len(self.list_memory_channels())}",
+            f"* Pipelines disponibles: {len(self.list_asset_pipelines())}",
+            f"* Plantillas registradas: {len(self.list_templates())}"
+        ]
+
+        for info in tech_info:
+            lines.append(info)
+        lines.append("")
+
+        lines.append("=" * 80)
+        return "\n".join(lines)
+
     # ------------------------------------------------------------------
     # Construcción de respuestas
     def _build_response(

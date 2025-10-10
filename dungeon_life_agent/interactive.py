@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import os
+import msvcrt
+import sys
 from typing import Optional
 
 from .agent import DungeonLifeAgent
@@ -210,9 +212,29 @@ def run_interactive(
 
     show_debug = bool(os.environ.get("WILLOW_DEBUG_TRACE"))
 
+    print("Consejo: Presiona F11 para ver información del agente")
+    print()
+
     while True:
         try:
-            message = input("consulta> ")
+            # Detectar si hay teclas especiales disponibles
+            if msvcrt.kbhit():
+                key = msvcrt.getch()
+                # F11 detection (código especial para teclas de función)
+                if key == b'\x00' or key == b'\xe0':  # Teclas especiales
+                    key = msvcrt.getch()
+                    if key == b';\x00':  # F11
+                        print()
+                        print(agent.get_agent_info_display())
+                        print()
+                        continue
+                # Si no es F11, devolver el carácter para input normal
+                else:
+                    # Simular input con el carácter presionado
+                    char = key.decode('latin-1')
+                    message = char + sys.stdin.readline().rstrip('\r\n')
+            else:
+                message = input("consulta> ")
         except (EOFError, KeyboardInterrupt):
             print()  # nueva línea
             break

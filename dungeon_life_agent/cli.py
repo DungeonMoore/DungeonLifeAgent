@@ -58,7 +58,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         agent = DungeonLifeAgent()
         run_interactive(
             agent,
-            greeting="🌿 Iniciando modo interactivo... (escribe 'salir' para terminar)\n",
+            greeting="Iniciando modo interactivo... (escribe 'salir' para terminar)\n",
         )
         return 0
 
