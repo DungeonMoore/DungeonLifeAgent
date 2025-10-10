@@ -106,12 +106,14 @@ class OllamaManager:
                 print(f"[INFO] Iniciando Ollama desde: {self.ollama_path}")
                 print("[INFO] Ejecutando: ollama serve")
 
+            stdout_target = None if self.verbose else subprocess.DEVNULL
+            stderr_target = None if self.verbose else subprocess.DEVNULL
+
             # Iniciar Ollama como proceso en segundo plano
             self._ollama_process = subprocess.Popen(
                 [self.ollama_path, "serve"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
+                stdout=stdout_target,
+                stderr=stderr_target,
             )
 
             self._started_by_us = True
@@ -127,6 +129,16 @@ class OllamaManager:
                         print(f"[OK] Ollama iniciado correctamente en {self.host}")
                         print(f"[INFO] Modelo configurado: {self.model}")
                     return True
+
+                if self._ollama_process and self._ollama_process.poll() is not None:
+                    if self.verbose:
+                        return_code = self._ollama_process.returncode
+                        print(
+                            "[ERROR] Ollama finalizo inesperadamente"
+                            + (f" (codigo {return_code})" if return_code is not None else "")
+                        )
+                    self.stop()
+                    return False
 
             print("[ERROR] Timeout esperando a que Ollama este disponible")
             self.stop()
@@ -144,11 +156,14 @@ class OllamaManager:
                 print("[INFO] Deteniendo proceso de Ollama...")
 
             try:
-                self._ollama_process.terminate()
-                # Esperar hasta 5 segundos a que termine
-                self._ollama_process.wait(timeout=5)
-                if self.verbose:
-                    print("[OK] Ollama detenido correctamente")
+                if self._ollama_process.poll() is None:
+                    self._ollama_process.terminate()
+                    # Esperar hasta 5 segundos a que termine
+                    self._ollama_process.wait(timeout=5)
+                    if self.verbose:
+                        print("[OK] Ollama detenido correctamente")
+                elif self.verbose:
+                    print("[INFO] Ollama ya se encontraba detenido")
             except subprocess.TimeoutExpired:
                 if self.verbose:
                     print("[WARNING] Forzando terminacion de Ollama...")
